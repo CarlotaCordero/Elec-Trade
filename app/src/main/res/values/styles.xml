@@ -9,4 +9,13 @@
         <item name="backgroundTint">@color/Goldfinger</item>
         <item name="android:textColor">@color/Hadopelagic_Water</item>
     </style>
+    <style name="caja_texto">
+        <item name="boxStrokeColor">@color/Goldfinger</item>
+        <item name="hintTextColor">@color/Goldfinger</item>
+        <item name="startIconTint">@color/Hadopelagic_Water</item>
+    </style>
+    <style name="interior_caja">
+        <item name="alpha">0.8</item>
+        <item name="backgroundTint">@color/white</item>
+    </style>
 </resources>
