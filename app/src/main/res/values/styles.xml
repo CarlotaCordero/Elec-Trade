@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="boton_oscuro">
+        <item name="backgroundTint">@color/Hadopelagic_Water</item>
+        <item name="android:textColor">@color/Goldfinger</item>
+    </style>
+    <style name="boton_claro">
+        <item name="backgroundTint">@color/Goldfinger</item>
+        <item name="android:textColor">@color/Hadopelagic_Water</item>
+    </style>
+</resources>
