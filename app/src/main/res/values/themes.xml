@@ -17,7 +17,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/Hadopelagic_Water</item>
         <item name="colorPrimaryVariant">@color/Stellar_Explorer</item>
-        <item name="colorOnPrimary">@color/Squash</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/Squash</item>
         <item name="colorSecondaryVariant">@color/Goldfinger</item>
