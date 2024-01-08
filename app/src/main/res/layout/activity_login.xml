@@ -32,13 +32,13 @@
         app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         android:layout_marginTop="48dp"
-        app:startIconDrawable="@drawable/user_ic">
+        app:startIconDrawable="@drawable/user_ic"
+        style="@style/caja_texto">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
-            android:background="@color/white"
+            style="@style/interior_caja"
             android:hint="UserName"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -50,14 +50,14 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineDer"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
         app:layout_constraintTop_toBottomOf="@+id/username"
-        app:startIconDrawable="@drawable/lock_ic">
-
+        app:startIconDrawable="@drawable/lock_ic"
+        style="@style/caja_texto"
+        app:passwordToggleEnabled="true" >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
-            android:background="@color/white"
+            style="@style/interior_caja"
             android:hint="Password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -79,7 +79,9 @@
         android:text="DON'T HAVE AN ACCOUNT?"
         app:layout_constraintBottom_toTopOf="@+id/register"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/Hadopelagic_Water"
+        android:textStyle="bold"/>
 
     <Button
         android:id="@+id/register"

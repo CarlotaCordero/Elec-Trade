@@ -32,13 +32,13 @@
         app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
         app:layout_constraintTop_toBottomOf="@+id/imagenReg"
         android:layout_marginTop="48dp"
-        app:startIconDrawable="@drawable/user_ic">
+        app:startIconDrawable="@drawable/user_ic"
+        style="@style/caja_texto">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
-            android:background="@color/white"
+            style="@style/interior_caja"
             android:hint="UserName"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -50,13 +50,13 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineDer"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
         app:layout_constraintTop_toBottomOf="@+id/username"
-        app:startIconDrawable="@drawable/mail_ic">
+        app:startIconDrawable="@drawable/mail_ic"
+        style="@style/caja_texto">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
-            android:background="@color/white"
+            style="@style/interior_caja"
             android:hint="Email"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -68,13 +68,14 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineDer"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
         app:layout_constraintTop_toBottomOf="@+id/email"
-        app:startIconDrawable="@drawable/lock_ic">
+        app:startIconDrawable="@drawable/lock_ic"
+        style="@style/caja_texto"
+        app:passwordToggleEnabled="true" >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
-            android:background="@color/white"
+            style="@style/interior_caja"
             android:hint="Password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -86,14 +87,15 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineDer"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:startIconDrawable="@drawable/arrowcircle_ic">
+        app:startIconDrawable="@drawable/arrowcircle_ic"
+        style="@style/caja_texto"
+        app:passwordToggleEnabled="true">
 
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:alpha="0.6"
-            android:background="@color/white"
+            style="@style/interior_caja"
             android:hint="Confirm Password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
