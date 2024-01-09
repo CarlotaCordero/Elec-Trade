@@ -40,7 +40,8 @@
             android:layout_height="wrap_content"
             style="@style/interior_caja"
             android:hint="UserName"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="@color/black"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -77,6 +78,7 @@
             android:layout_height="wrap_content"
             style="@style/interior_caja"
             android:hint="Password"
+            app:hintTextColor="@color/black"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 

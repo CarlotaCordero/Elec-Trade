@@ -13,9 +13,13 @@
         <item name="boxStrokeColor">@color/Goldfinger</item>
         <item name="hintTextColor">@color/Goldfinger</item>
         <item name="startIconTint">@color/Hadopelagic_Water</item>
+        <item name="android:textColorHint">@color/Hadopelagic_Water</item>
+        <item name="passwordToggleTint">@color/Hadopelagic_Water</item>
+        <item name="cornerRadius">0dp</item>
+        <item name="alpha">0.8</item>
     </style>
     <style name="interior_caja">
-        <item name="alpha">0.8</item>
         <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 </resources>

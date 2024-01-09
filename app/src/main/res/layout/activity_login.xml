@@ -51,8 +51,8 @@
         app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
         app:layout_constraintTop_toBottomOf="@+id/username"
         app:startIconDrawable="@drawable/lock_ic"
-        style="@style/caja_texto"
-        app:passwordToggleEnabled="true" >
+        app:passwordToggleEnabled="true"
+        style="@style/caja_texto">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
