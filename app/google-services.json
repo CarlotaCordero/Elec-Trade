@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "336258930227",
+    "project_id": "elec-trade",
+    "storage_bucket": "elec-trade.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:336258930227:android:9dc2a9db51015fc6fcf546",
+        "android_client_info": {
+          "package_name": "com.example.elec_trade"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-zdy8RSVOziPDmqF__j9i_1ZmurRS8hY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
