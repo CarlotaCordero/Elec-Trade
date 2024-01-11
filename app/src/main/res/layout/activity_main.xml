@@ -8,8 +8,8 @@
     android:background="@color/Cotton_Field">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -27,7 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
-        app:menu="@menu/bottom_app_bar" />
+        app:menu="@menu/bottom_app_bar"
+        app:navigationIcon="@drawable/search_ic"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
