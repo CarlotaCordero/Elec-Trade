@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/chat"
+        android:icon="@drawable/chat_ic"
+        android:enabled="true"
+        android:title="Chat"
+        app:showAsAction="always"
+        android:iconTint="@color/Cotton_Field"/>
+
+    <item
+        android:id="@+id/cart"
+        android:icon="@drawable/cart_ic"
+        android:enabled="true"
+        android:title="Cart"
+        app:showAsAction="always"
+        android:iconTint="@color/Cotton_Field"
+        />
+
+    <item
+        android:id="@+id/user"
+        android:icon="@drawable/user_ic"
+        android:enabled="true"
+        android:title="User"
+        app:showAsAction="always"
+        android:iconTint="@color/Cotton_Field" />
+
+</menu>
