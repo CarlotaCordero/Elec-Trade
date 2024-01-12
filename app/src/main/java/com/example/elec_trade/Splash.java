@@ -31,7 +31,7 @@ public class Splash extends AppCompatActivity {
 
 
         Glide.with(this)
-                .load(R.drawable.logosplash)
+                .load(R.drawable.logosplash_2)
                 .transition(DrawableTransitionOptions.withCrossFade(0))
                 .centerCrop()
                 .placeholder(new ColorDrawable(this.getResources().getColor(R.color.Goldfinger)))
