@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Main"
+    android:orientation="vertical"
     android:background="@color/Cotton_Field">
 
     <androidx.viewpager.widget.ViewPager
@@ -12,6 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         ></androidx.viewpager.widget.ViewPager>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
