@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/home"
         android:title="Home"
         android:icon="@drawable/home_icon"
-        android:iconTint="@color/white"
         android:contentDescription="none"
         app:showAsAction="always"
         />
@@ -16,7 +14,6 @@
         android:id="@+id/chat"
         android:title="Chats"
         android:icon="@drawable/chat_ic"
-        android:iconTint="@color/white"
         android:contentDescription="none"
         app:showAsAction="always"
         >
