@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Main"
+    android:orientation="vertical"
     android:background="@color/Cotton_Field">
 
     <androidx.viewpager.widget.ViewPager
@@ -13,13 +14,18 @@
         android:layout_height="match_parent"
         ></androidx.viewpager.widget.ViewPager>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="59dp"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/Goldfinger"
         app:menu="@menu/menu_main_barra_tareas"
-        />
+        style="@style/menuBottom"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -22,4 +22,9 @@
         <item name="backgroundTint">@color/white</item>
         <item name="android:textColor">@color/black</item>
     </style>
+    <style name="menuBottom">
+        <item name="backgroundTint">@color/Hadopelagic_Water</item>
+        <item name="itemIconTint">@color/navigation_icon_color</item>
+        <item name="itemTextColor">@color/navigation_icon_color</item>
+    </style>
 </resources>
