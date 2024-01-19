@@ -32,47 +32,9 @@ public class Main extends AppCompatActivity {
         BottomNavigationView bottomAppBar = findViewById(R.id.bottom_navigation);
         Menu menu = bottomAppBar.getMenu();
 
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem menuItem = menu.getItem(i);
-            Drawable icon = menuItem.getIcon();
-
-            //if (icon != null) {
-                icon.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
-                menuItem.setIcon(icon);
-            //}
-        }
-        bottomAppBar.setOnNavigationItemSelectedListener(item -> {
-            // Maneja la selección del elemento del menú aquí
-            return true;
-        });
-
         //Inicializa el RecyclerView
         inicializarRecyclerView();
     }
-        /*
-        //setupToolbar();
-
-
-        // Obtén una referencia al icono de navegación del BottomAppBar
-        Drawable navigationIcon = bottomAppBar.getNavigationIcon();
-
-        // Aplica un filtro de color blanco al icono de navegación
-        navigationIcon.setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
-
-        // Configura el icono de navegación actualizado en el BottomAppBar
-        bottomAppBar.setNavigationIcon(navigationIcon);
-        // Obtén una referencia al menú
-
-
-        // Obtén una referencia a cada elemento del menú y aplica el filtro de color blanco
-
-*/
-    /*
-    private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.bottomAppBar);
-        setSupportActionBar(toolbar);
-    }
-    */
 
     private void inicializarRecyclerView() {
         recyclerView = findViewById(R.id.recyclerView);
