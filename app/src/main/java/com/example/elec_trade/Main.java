@@ -81,7 +81,7 @@ public class Main extends AppCompatActivity {
         List<Producto> productoList = new ArrayList<>();
 
         for(int i = 0; i < 30; i++) {
-            productoList.add(new Producto("R.color.black","Producto"+i,"Precio"+i));
+            productoList.add(new Producto("https://s3-symbol-logo.tradingview.com/intel--600.png","Producto"+i,"Precio"+i));
         }
 
         productoAdapter = new ProductoAdapter(productoList, this);
