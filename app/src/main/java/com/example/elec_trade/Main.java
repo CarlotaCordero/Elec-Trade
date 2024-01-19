@@ -1,15 +1,20 @@
 package com.example.elec_trade;
 
+import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
@@ -32,31 +37,16 @@ public class Main extends AppCompatActivity {
                 menuItem.setIcon(icon);
             }
         }
-        /*
-        //setupToolbar();
 
+        BottomNavigationView mybottomNavView = findViewById(R.id.bottom_navigation);
 
-// Obtén una referencia al icono de navegación del BottomAppBar
-        Drawable navigationIcon = bottomAppBar.getNavigationIcon();
+        BottomNavigationMenuView bottomNavigationMenuView =
+                (BottomNavigationMenuView) mybottomNavView.getChildAt(0);
+        View v = bottomNavigationMenuView.getChildAt(2);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+        LayoutInflater.from(this)
+                .inflate(R.layout.layout_badge, itemView, true);
 
-// Aplica un filtro de color blanco al icono de navegación
-        navigationIcon.setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
-
-// Configura el icono de navegación actualizado en el BottomAppBar
-        bottomAppBar.setNavigationIcon(navigationIcon);
-        // Obtén una referencia al menú
-
-
-// Obtén una referencia a cada elemento del menú y aplica el filtro de color blanco
-
-*/
     }
-    /*
-    private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.bottomAppBar);
-        setSupportActionBar(toolbar);
-    }
-    */
-
 
 }

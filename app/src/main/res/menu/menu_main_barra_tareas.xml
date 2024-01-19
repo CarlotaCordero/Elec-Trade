@@ -6,7 +6,7 @@
     <item
         android:id="@+id/home"
         android:title="Home"
-        android:icon="@drawable/home_icon"
+        android:icon="@drawable/ic_casita"
         android:iconTint="@color/white"
         android:contentDescription="none"
         app:showAsAction="always"
