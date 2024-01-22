@@ -18,6 +18,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="59dp"
         android:layout_marginBottom="58dp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,5 +28,16 @@
         android:layout_gravity="bottom"
         app:menu="@menu/menu_main_barra_tareas"
         style="@style/menuBottom"/>
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Buscar..."
+        app:iconifiedByDefault="false"
+        android:background="@drawable/borde_buscador"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
