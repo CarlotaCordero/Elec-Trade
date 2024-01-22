@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,22 +31,32 @@ public class Main extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ProductoAdapter productoAdapter;
+    private FloatingActionButton aniadirProd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         BottomNavigationView mybottomNavView = findViewById(R.id.bottom_navigation);
+        aniadirProd = findViewById(R.id.addProduct);
 
+        //Set BottomNavigationView
         BottomNavigationMenuView bottomNavigationMenuView =
                 (BottomNavigationMenuView) mybottomNavView.getChildAt(0);
         View v = bottomNavigationMenuView.getChildAt(2);
         BottomNavigationItemView itemView = (BottomNavigationItemView) v;
         LayoutInflater.from(this)
                 .inflate(R.layout.layout_badge, itemView, true);
-
         //Inicializa el RecyclerView
         inicializarRecyclerView();
+        //Accion para añadir producto
+        aniadirProd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addProducto = new Intent(Main.this, AniadirProducto.class);
+                startActivity(addProducto);
+            }
+        });
     }
 
     private void inicializarRecyclerView() {

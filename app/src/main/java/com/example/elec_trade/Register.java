@@ -22,7 +22,7 @@ public class Register extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             // Configura el color del título, por ejemplo
-            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Register</font>"));
+            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Add Product</font>"));
         }
 
         su.setOnClickListener(new View.OnClickListener() {
