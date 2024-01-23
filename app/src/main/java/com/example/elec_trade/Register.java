@@ -23,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class Register extends AppCompatActivity {
 
@@ -35,7 +34,6 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        firestore = FirebaseFirestore.getInstance();
         firestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -65,7 +63,6 @@ public class Register extends AppCompatActivity {
                     registerUser(uName, uEmail, uPass);
                 } else {
                     Toast.makeText(Register.this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
-                    //registerUser(uName, uEmail, uPass);
                 }
             }
         });
@@ -82,20 +79,21 @@ public class Register extends AppCompatActivity {
                 map.put("name", uName);
                 map.put("email", uEmail);
                 map.put("password", uPass);
-
-                firestore.collection("user").document(id).set(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+                firestore.collection("user").document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    //Never enters onComplete function or onFailure
                     @Override
-                    public void onSuccess(Void unused) {
-                        //toMainPage();
+                    public void onComplete(@NonNull Task<Void> task) {
+                        finish();
+                        Toast.makeText(Register.this, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show();
+                        toMainPage();
+                        //toMainPage(task);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(Register.this, "Error al guardar", Toast.LENGTH_SHORT).show();
-                        toMainPage();
                     }
                 });
-                toMainPage();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -107,14 +105,10 @@ public class Register extends AppCompatActivity {
     }
 
     private void toMainPage() {
-        try {
             Intent toMain = new Intent(Register.this, Main.class);
             toMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             toMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(toMain);
-        } catch (Exception e) {
-            Log.e("Registro", "Error al iniciar AniadirProducto: " + e.getMessage());
-            e.printStackTrace();
-        }
     }
+
 }
