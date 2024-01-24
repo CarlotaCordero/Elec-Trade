@@ -56,13 +56,26 @@ public class Register extends AppCompatActivity {
                 String uEmail = userEmail.getEditText().getText().toString().trim();
                 String uPass = userPass.getEditText().getText().toString().trim();
                 String uPassRep = userPassRep.getEditText().getText().toString().trim();
-
+                setError();
                 if (uName.isEmpty() || uEmail.isEmpty() || uPass.isEmpty() || uPassRep.isEmpty()) {
-                    Toast.makeText(Register.this, "Complete los datos", Toast.LENGTH_SHORT).show();
-                } else if (uPass.equals(uPassRep)) {
+                    if(uName.isEmpty())
+                        userName.setError("Campo vacío");
+                    if(uEmail.isEmpty())
+                        userEmail.setError("Campo vacío");
+                    if(uPass.isEmpty())
+                        userPass.setError("Campo vacío");
+                    if(uPassRep.isEmpty())
+                        userPassRep.setError("Campo vacío");
+                } else if (uPass.equals(uPassRep) && uPass.length() >= 6 && uPassRep.length() >= 6) {
                     registerUser(uName, uEmail, uPass);
                 } else {
-                    Toast.makeText(Register.this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
+                    if (uPass.length() >= 6 && uPassRep.length() >= 6) {
+                        userPassRep.setError("Revisar");
+                        showToast("Lac contraseñas no coinciden");
+                    } else {
+                        userPass.setError("Mínimo 6 caracteres");
+                        userPassRep.setError("Mínimo 6 caracteres");
+                    }
                 }
             }
         });
@@ -83,22 +96,20 @@ public class Register extends AppCompatActivity {
                     //Never enters onComplete function or onFailure
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        finish();
-                        Toast.makeText(Register.this, "Usuario registrado con éxito", Toast.LENGTH_SHORT).show();
+                        showToast("Usuario registrado con éxito");
                         toMainPage();
-                        //toMainPage(task);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Register.this, "Error al guardar", Toast.LENGTH_SHORT).show();
+                        showToast(e.getMessage());
                     }
                 });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Register.this, "Error al registrar "+ e.getMessage(), Toast.LENGTH_SHORT).show();
+                showToast(e.getMessage());
             }
         });
 
@@ -109,6 +120,17 @@ public class Register extends AppCompatActivity {
             toMain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             toMain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(toMain);
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setError() {
+        userName.setErrorEnabled(false);
+        userEmail.setErrorEnabled(false);
+        userPass.setErrorEnabled(false);
+        userPassRep.setErrorEnabled(false);
     }
 
 }
