@@ -4,13 +4,13 @@ Bienvenido a Elec_trade, tu mercado de intercambio para componentes informático
 
 ## Capturas de Pantalla
 
-![Our Splash](https://github.com/CarlotaCordero/Elec-Trade/assets/131857912/293fdb90-ba57-48a0-9bec-3c893568a858)
+![Our Splash](https://github.com/CarlotaCordero/Elec-Trade/assets/131857912/293fdb90-ba57-48a0-9bec-3c893568a858){:width="300px"}
 *Llamativa y facil de usar*
 
-![Resgister with us](https://github.com/CarlotaCordero/Elec-Trade/assets/131857912/e5033536-8897-40cc-95ce-20721e9faefa)
+![Resgister with us](https://github.com/CarlotaCordero/Elec-Trade/assets/131857912/e5033536-8897-40cc-95ce-20721e9faefa){:width="300px"}
 *Unete a nuestros Usuarios*
 
-![Search your Product](https://github.com/CarlotaCordero/Elec-Trade/assets/131857912/4efb1402-6c60-485d-b2d2-cf7054277e21)
+![Search your Product](https://github.com/CarlotaCordero/Elec-Trade/assets/131857912/4efb1402-6c60-485d-b2d2-cf7054277e21){:width="300px"}
 *Todo lo que buscas al alcance de tu mano*
 
 ## Características Principales
