@@ -1,14 +1,28 @@
 package com.example.elec_trade.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import com.example.elec_trade.Adapter.Producto;
+import com.example.elec_trade.Adapter.ProductoAdapter;
+import com.example.elec_trade.AniadirProducto;
+import com.example.elec_trade.Main;
 import com.example.elec_trade.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +39,10 @@ public class Home_fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    //
+    private RecyclerView recyclerView;
+    private ProductoAdapter productoAdapter;
+    private FloatingActionButton aniadirProd;
 
     public Home_fragment() {
         // Required empty public constructor
@@ -57,10 +75,44 @@ public class Home_fragment extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_fragment, container, false);
+        // Creamos el rootView
+        View rootView = inflater.inflate(R.layout.fragment_home_fragment, container, false);
+        //Instanciamos nuestros elementos
+        aniadirProd = rootView.findViewById(R.id.addProduct);
+        SearchView searchView = rootView.findViewById(R.id.searchView);
+        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        int textColor = ContextCompat.getColor(requireContext(), R.color.black);
+        searchEditText.setTextColor(textColor);
+        // Inicializa el RecyclerView
+        inicializarRecyclerView(rootView);
+        //Accion para añadir producto
+        aniadirProd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addProducto = new Intent(requireActivity(), AniadirProducto.class);
+                startActivity(addProducto);
+            }
+        });
+        return rootView;
+    }
+
+    private void inicializarRecyclerView(View rootView) {
+        recyclerView = rootView.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        List<Producto> productoList = new ArrayList<>();
+
+        for(int i = 0; i < 30; i++) {
+            productoList.add(new Producto("https://s3-symbol-logo.tradingview.com/intel--600.png","Producto"+i,"Precio"+i));
+        }
+
+        productoAdapter = new ProductoAdapter(productoList, requireContext());
+
+        recyclerView.setAdapter(productoAdapter);
+
     }
 }
