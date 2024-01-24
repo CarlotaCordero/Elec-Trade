@@ -28,5 +28,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu_main_barra_tareas" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

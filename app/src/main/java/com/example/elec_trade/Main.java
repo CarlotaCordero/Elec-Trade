@@ -36,9 +36,6 @@ import java.util.List;
 
 public class Main extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private ProductoAdapter productoAdapter;
-    private FloatingActionButton aniadirProd;
     private SectionsPagerAdapter sectionsPagerAdapter;
     private MenuItem prevMenuItem;
     @Override
@@ -47,7 +44,6 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         BottomNavigationView mybottomNavView = findViewById(R.id.bottom_navigation);
-        //aniadirProd = findViewById(R.id.addProduct);
         //page adapter
         sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -95,51 +91,11 @@ public class Main extends AppCompatActivity {
                     removeBadge(mybottomNavView, mybottomNavView.getMenu().getItem(position).getItemId());
                 }
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
 
             }
         });
-        /*//Color buscador
-        SearchView searchView = findViewById(R.id.searchView);
-        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        // Cambiar el color del texto
-        int textColor = ContextCompat.getColor(this, R.color.black);
-        searchEditText.setTextColor(textColor);
-        //Set BottomNavigationView
-        BottomNavigationMenuView bottomNavigationMenuView =
-                (BottomNavigationMenuView) mybottomNavView.getChildAt(0);
-        View v = bottomNavigationMenuView.getChildAt(2);
-        BottomNavigationItemView itemView = (BottomNavigationItemView) v;
-        LayoutInflater.from(this)
-                .inflate(R.layout.layout_badge, itemView, true);
-        //Inicializa el RecyclerView
-        inicializarRecyclerView();
-        //Accion para añadir producto
-        aniadirProd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent addProducto = new Intent(Main.this, AniadirProducto.class);
-                startActivity(addProducto);
-            }
-        });*/
-    }
-
-    private void inicializarRecyclerView() {
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        List<Producto> productoList = new ArrayList<>();
-
-        for(int i = 0; i < 30; i++) {
-            productoList.add(new Producto("https://s3-symbol-logo.tradingview.com/intel--600.png","Producto"+i,"Precio"+i));
-        }
-
-        productoAdapter = new ProductoAdapter(productoList, this);
-
-        recyclerView.setAdapter(productoAdapter);
-
     }
 
     public static void removeBadge(BottomNavigationView bottomNavigationView, @IdRes int itemId) {
