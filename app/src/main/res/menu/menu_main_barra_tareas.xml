@@ -5,7 +5,7 @@
     <item
         android:id="@+id/home"
         android:title="Home"
-        android:icon="@drawable/home_icon"
+        android:icon="@drawable/ic_casita_2"
         android:contentDescription="none"
         app:showAsAction="always"
         />
@@ -13,7 +13,7 @@
     <item
         android:id="@+id/chat"
         android:title="Chats"
-        android:icon="@drawable/chat_ic"
+        android:icon="@drawable/chat_ic_2"
         android:contentDescription="none"
         app:showAsAction="always"
         >
@@ -22,7 +22,7 @@
     <item
         android:id="@+id/cart"
         android:title="Cart"
-        android:icon="@drawable/cart_ic"
+        android:icon="@drawable/cart_ic_2"
         android:contentDescription="none"
         app:showAsAction="always"
         />
@@ -30,7 +30,7 @@
     <item
         android:id="@+id/profile"
         android:title="Profile"
-        android:icon="@drawable/user_ic"
+        android:icon="@drawable/user_ic_2"
         android:contentDescription="none"
         app:showAsAction="always"
         >
