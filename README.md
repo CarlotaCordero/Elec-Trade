@@ -3,7 +3,7 @@
 Bienvenido a Elec_trade, tu mercado de intercambio para componentes informáticos. Convierte tus componentes en efectivo o encuentra lo que necesitas para tu próximo proyecto. ¡Conecta, intercambia y electrifica tu experiencia!
 
 ## Capturas de Pantalla
-
+<img src="(https://github.com/CarlotaCordero/Elec-Trade/assets/131857912/293fdb90-ba57-48a0-9bec-3c893568a858)" alt="Our Splash" width="300"/>
 ![Our Splash](https://github.com/CarlotaCordero/Elec-Trade/assets/131857912/293fdb90-ba57-48a0-9bec-3c893568a858){:width="300px"}
 *Llamativa y facil de usar*
 
