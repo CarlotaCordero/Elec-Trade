@@ -4,7 +4,7 @@ Bienvenido a Elec_trade, tu mercado de intercambio para componentes informático
 
 ## Capturas de Pantalla
 
-![Our Splash](https://github.com/CarlotaCordero/Elec-Trade/assets/131857912/293fdb90-ba57-48a0-9bec-3c893568a858 | width=300)
+![Our Splash](https://github.com/CarlotaCordero/Elec-Trade/assets/131857912/293fdb90-ba57-48a0-9bec-3c893568a858)
 *Llamativa y facil de usar*
 
 ![Resgister with us](https://github.com/CarlotaCordero/Elec-Trade/assets/131857912/e5033536-8897-40cc-95ce-20721e9faefa)
