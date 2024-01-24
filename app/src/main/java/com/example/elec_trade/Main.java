@@ -2,7 +2,9 @@ package com.example.elec_trade;
 
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import com.example.elec_trade.Adapter.Producto;
 import com.example.elec_trade.Adapter.ProductoAdapter;
@@ -40,6 +43,12 @@ public class Main extends AppCompatActivity {
         BottomNavigationView mybottomNavView = findViewById(R.id.bottom_navigation);
         aniadirProd = findViewById(R.id.addProduct);
 
+        //Color buscador
+        SearchView searchView = findViewById(R.id.searchView);
+        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        // Cambiar el color del texto
+        int textColor = ContextCompat.getColor(this, R.color.black);
+        searchEditText.setTextColor(textColor);
         //Set BottomNavigationView
         BottomNavigationMenuView bottomNavigationMenuView =
                 (BottomNavigationMenuView) mybottomNavView.getChildAt(0);
