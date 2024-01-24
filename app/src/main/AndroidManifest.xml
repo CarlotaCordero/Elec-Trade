@@ -21,7 +21,7 @@
             android:parentActivityName=".Main"/>
         <activity
             android:name=".Main"
-            android:exported="false"
+            android:exported="true"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Splash"
