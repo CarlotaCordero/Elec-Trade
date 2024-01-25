@@ -1,14 +1,22 @@
 package com.example.elec_trade.Fragments;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.example.elec_trade.Login;
+import com.example.elec_trade.Main;
 import com.example.elec_trade.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +33,9 @@ public class Profile_fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    //
+    private Button lOut;
+    private FirebaseAuth firebaseAuth;
     public Profile_fragment() {
         // Required empty public constructor
     }
@@ -60,7 +70,47 @@ public class Profile_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_fragment, container, false);
+        firebaseAuth = FirebaseAuth.getInstance();  // Inicializa firebaseAuth
+        // Creamos el rootView
+        View rootView = inflater.inflate(R.layout.fragment_profile_fragment, container, false);
+        lOut = rootView.findViewById(R.id.logout);
+        lOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLogoutConfirmationDialog();
+            }
+        });
+        return rootView;
+    }
+
+    private void showLogoutConfirmationDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+            builder.setTitle("LOGOUT");
+            builder.setCancelable(false);
+            //Set buttons
+            builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    firebaseAuth.signOut();
+                    //goToLogin();
+                    startActivity(new Intent(getActivity(), Login.class));
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        //Create dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void goToLogin() {
+        Intent toLogin = new Intent(requireContext(), Login.class);
+        toLogin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        toLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(toLogin);
     }
 }
