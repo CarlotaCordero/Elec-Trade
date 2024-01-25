@@ -92,8 +92,7 @@ public class Profile_fragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     firebaseAuth.signOut();
-                    //goToLogin();
-                    startActivity(new Intent(getActivity(), Login.class));
+                    goToLogin();
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -108,9 +107,10 @@ public class Profile_fragment extends Fragment {
     }
 
     private void goToLogin() {
-        Intent toLogin = new Intent(requireContext(), Login.class);
+        Intent toLogin = new Intent(requireActivity(), Login.class);
         toLogin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         toLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(toLogin);
+        requireActivity().finish();
     }
 }
