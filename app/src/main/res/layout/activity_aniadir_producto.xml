@@ -29,6 +29,8 @@
             android:inputType="text"
             android:hint="Producto"/>
 
+
+
         <EditText
             android:id="@+id/descProducto"
             android:layout_width="match_parent"
