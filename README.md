@@ -22,3 +22,5 @@ Bienvenido a Elec_trade, tu mercado de intercambio para componentes informático
 - **Seguro y Confiable:** Garantizamos un entorno seguro y confiable para todas tus transacciones.
 
 > ⚠️ **Nota:** Este proyecto está en desarrollo activo. Algunas características pueden no estar completamente implementadas o pueden estar en fase de prueba. Tu feedback es apreciado mientras trabajamos para mejorar la experiencia.
+
+Prueba usuario marcos
