@@ -15,12 +15,16 @@
 
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toEndOf="@id/guidelineIzq"
-        app:layout_constraintEnd_toStartOf="@id/guidelineDer"
+        android:id="@+id/linearLayout"
+        android:layout_width="335dp"
+        android:layout_height="551dp"
         android:orientation="vertical"
-        android:layout_marginTop="56dp">
+        app:layout_constraintBottom_toTopOf="@+id/aniadir"
+        app:layout_constraintEnd_toStartOf="@id/guidelineDer"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/guidelineIzq"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
 
         <EditText
@@ -28,19 +32,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
-            android:hint="Producto"/>
+            android:hint="Producto"
+            android:inputType="text" />
 
         <EditText
             android:id="@+id/descProducto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Descripcion (400 max)"
             android:gravity="top"
+            android:hint="Descripcion (400 max)"
             android:inputType="textMultiLine"
-            android:minLines="4"
             android:maxLines="4"
-        />
+            android:minLines="4" />
 
 
         <EditText
@@ -48,17 +51,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="number"
             android:hint="Precio"
-            />
-
-        <Button
-            android:id="@+id/aniadir"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="350dp"
-            android:text="ADD Product" />
+            android:inputType="number" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/aniadir"
+        android:layout_width="354dp"
+        android:layout_height="50dp"
+        android:text="ADD Product"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.934" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineDer"
