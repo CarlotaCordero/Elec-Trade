@@ -6,17 +6,26 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.example.elec_trade.Adapter.Producto;
+import com.example.elec_trade.Adapter.ProductoAdapter;
 import com.example.elec_trade.Login;
 import com.example.elec_trade.Main;
 import com.example.elec_trade.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +43,10 @@ public class Profile_fragment extends Fragment {
     private String mParam1;
     private String mParam2;
     //
+    private RecyclerView recyclerView;
+    private ProductoAdapter productoAdapter;
     private Button lOut;
+    private ImageView profilePic;
     private FirebaseAuth firebaseAuth;
     public Profile_fragment() {
         // Required empty public constructor
@@ -80,6 +92,14 @@ public class Profile_fragment extends Fragment {
                 showLogoutConfirmationDialog();
             }
         });
+        // Inicializa el RecyclerView
+        inicializarRecyclerView(rootView);
+        //Subir foto con glide
+        profilePic = rootView.findViewById(R.id.profilePic);
+        Glide.with(requireContext())
+                .load(R.drawable.user_icon)
+                .circleCrop()
+                .into(profilePic);
         return rootView;
     }
 
@@ -112,5 +132,21 @@ public class Profile_fragment extends Fragment {
         toLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(toLogin);
         requireActivity().finish();
+    }
+
+    private void inicializarRecyclerView(View rootView) {
+        recyclerView = rootView.findViewById(R.id.reciclerProfile);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        List<Producto> productoList = new ArrayList<>();
+
+        for(int i = 0; i < 30; i++) {
+            productoList.add(new Producto("https://s3-symbol-logo.tradingview.com/intel--600.png","Producto"+i,"Precio"+i));
+        }
+
+        productoAdapter = new ProductoAdapter(productoList, requireContext());
+
+        recyclerView.setAdapter(productoAdapter);
+
     }
 }
