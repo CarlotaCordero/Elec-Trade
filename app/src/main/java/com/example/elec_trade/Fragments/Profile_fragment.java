@@ -13,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.elec_trade.Adapter.Producto;
 import com.example.elec_trade.Adapter.ProductoAdapter;
 import com.example.elec_trade.Login;
@@ -44,6 +46,7 @@ public class Profile_fragment extends Fragment {
     private RecyclerView recyclerView;
     private ProductoAdapter productoAdapter;
     private Button lOut;
+    private ImageView profilePic;
     private FirebaseAuth firebaseAuth;
     public Profile_fragment() {
         // Required empty public constructor
@@ -91,6 +94,12 @@ public class Profile_fragment extends Fragment {
         });
         // Inicializa el RecyclerView
         inicializarRecyclerView(rootView);
+        //Subir foto con glide
+        profilePic = rootView.findViewById(R.id.profilePic);
+        Glide.with(requireContext())
+                .load(R.drawable.user_icon)
+                .circleCrop()
+                .into(profilePic);
         return rootView;
     }
 
