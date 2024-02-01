@@ -53,10 +53,15 @@ public class AniadirProducto extends AppCompatActivity {
                 String dProd = desc.getText().toString().trim();
                 String pProd = prec.getText().toString().trim();
 
-                if(nProd.isEmpty() || dProd.isEmpty() || pProd.isEmpty()) {
+                if (nProd.isEmpty() || dProd.isEmpty() || pProd.isEmpty()) {
                     Toast.makeText(AniadirProducto.this, "Ingrese los datos", Toast.LENGTH_SHORT).show();
                 } else {
-                    postProd(nProd, dProd, pProd);
+                    // Verificar la longitud del campo de descripción
+                    if (dProd.length() > 400) {
+                        Toast.makeText(AniadirProducto.this, "La descripción no puede superar los 400 caracteres", Toast.LENGTH_SHORT).show();
+                    } else {
+                        postProd(nProd, dProd, pProd);
+                    }
                 }
             }
         });
