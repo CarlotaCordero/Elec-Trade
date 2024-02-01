@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.elec_trade.Adapter.Producto;
@@ -21,8 +23,14 @@ import com.example.elec_trade.Adapter.ProductoAdapter;
 import com.example.elec_trade.Login;
 import com.example.elec_trade.Main;
 import com.example.elec_trade.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +55,7 @@ public class Profile_fragment extends Fragment {
     private ProductoAdapter productoAdapter;
     private Button lOut;
     private ImageView profilePic;
+    private TextView uName, uEmail;
     private FirebaseAuth firebaseAuth;
     public Profile_fragment() {
         // Required empty public constructor
@@ -83,6 +92,8 @@ public class Profile_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         firebaseAuth = FirebaseAuth.getInstance();  // Inicializa firebaseAuth
+        // Obtener la referencia a la base de datos
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Creamos el rootView
         View rootView = inflater.inflate(R.layout.fragment_profile_fragment, container, false);
         lOut = rootView.findViewById(R.id.logout);
@@ -92,6 +103,14 @@ public class Profile_fragment extends Fragment {
                 showLogoutConfirmationDialog();
             }
         });
+        //Sacar datos de usuario
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        uName = rootView.findViewById(R.id.profileName);
+        String uid = user.getUid();
+        DocumentReference userReference = db.collection("user").document(uid);
+        bucarUsuario(userReference);
+        uEmail = rootView.findViewById(R.id.profileEmail);
+        uEmail.setText(user.getEmail().toString());
         // Inicializa el RecyclerView
         inicializarRecyclerView(rootView);
         //Subir foto con glide
@@ -148,5 +167,31 @@ public class Profile_fragment extends Fragment {
 
         recyclerView.setAdapter(productoAdapter);
 
+    }
+
+    private void bucarUsuario(DocumentReference userReference) {
+        userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Los datos del usuario existen en Firestore
+                        // Obtener los datos del usuario
+                        String username = document.getString("name");
+
+                        // Hacer algo con el nombre de usuario (por ejemplo, establecerlo en un TextView)
+                        uName.setText(username);
+                    } else {
+                        // El documento del usuario no existe en Firestore
+                        // Puedes manejar esto según tus necesidades
+                    }
+                } else {
+                    // Manejar errores de lectura de Firestore si es necesario
+                    Exception exception = task.getException();
+                    // ...
+                }
+            }
+        });
     }
 }
