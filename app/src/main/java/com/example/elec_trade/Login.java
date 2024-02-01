@@ -50,10 +50,13 @@ public class Login extends AppCompatActivity {
                 String uPass = passwd.getEditText().getText().toString().trim();
                 setError();
                 if(uEmail.isEmpty() || uPass.isEmpty()) {
-                    if (uEmail.isEmpty())
-                        email.setError("Campo vacío");
-                    if (uPass.isEmpty())
-                        passwd.setError("Campo vacío");
+                    if (uEmail.isEmpty()){
+                        passwd.setError(" ");
+                    }
+                    //cambio provisional
+                    if (uPass.isEmpty()){
+                        passwd.setError(" ");
+                    }
                 } else {
                     loginUser(uEmail, uPass);
                 }
@@ -68,9 +71,9 @@ public class Login extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     goToMain();
                 } else {
-                    showToast("Email / Password incorrectas");
+                    //showToast("Email / Password incorrectas");
                     //email.setError("Revisar");
-                    passwd.setError("Revisar");
+                    passwd.setError("Las credenciales no coinciden");
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
