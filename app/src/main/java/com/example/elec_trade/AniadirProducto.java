@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
@@ -23,9 +26,10 @@ import java.util.Map;
 
 public class AniadirProducto extends AppCompatActivity {
 
-    private Button aniadir;
+    private Button aniadir, aniadirimagen;
     private EditText nom, desc, prec;
     private FirebaseFirestore mFirestore;
+    private static final int PICK_IMAGE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +43,8 @@ public class AniadirProducto extends AppCompatActivity {
         desc = findViewById(R.id.descProducto);
         prec = findViewById(R.id.precProducto);
         aniadir = findViewById(R.id.aniadir);
+        aniadirimagen=findViewById(R.id.aniadirimagen);
+
 
         aniadir.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +61,32 @@ public class AniadirProducto extends AppCompatActivity {
             }
         });
 
+        aniadirimagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openGallery();
+            }
+        });
+
     }
+
+    private void openGallery() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        galleryIntent.setType("image/*");
+        startActivityForResult(galleryIntent, PICK_IMAGE);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
+            // Aquí puedes manejar la imagen seleccionada, por ejemplo, obtener la URI
+            Uri selectedImageUri = data.getData();
+            // Puedes utilizar 'selectedImageUri' como desees, por ejemplo, mostrarla en un ImageView
+            // imageView.setImageURI(selectedImageUri);
+        }
+    }
+
 
     private void postProd(String nProd, String dProd, String pProd) {
         Map<String, Object> map = new HashMap<>();
