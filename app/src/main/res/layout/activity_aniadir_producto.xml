@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AniadirProducto">
+    tools:context=".AniadirProducto"
+    android:background="@color/Cotton_Field">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineIzq"
@@ -23,14 +24,13 @@
         app:layout_constraintStart_toEndOf="@id/guidelineIzq">
 
         <com.google.android.material.textfield.TextInputLayout
-
+            android:id="@+id/cajanombre"
             style="@style/caja_texto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             app:layout_constraintEnd_toStartOf="@+id/guidelineDer"
-            app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
-            app:layout_constraintTop_toBottomOf="@+id/imagenReg">
+            app:layout_constraintStart_toStartOf="@+id/guidelineIzq">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nomProducto"
@@ -44,13 +44,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-
+            android:id="@+id/cajadescripcion"
             style="@style/caja_texto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@+id/guidelineDer"
             app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
-            app:layout_constraintTop_toBottomOf="@+id/imagenReg">
+            app:layout_constraintTop_toBottomOf="@+id/cajanombre">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/descProducto"
@@ -58,19 +58,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Descripcion: "
-                android:inputType="text"
+                android:inputType="textMultiLine"
+                android:gravity="top"
+                android:maxLines="4"
+                android:minLines="4"
                 android:textColor="@color/black" />
           
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-
+            android:id="@+id/cajaprecio"
             style="@style/caja_texto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@+id/guidelineDer"
             app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
-            app:layout_constraintTop_toBottomOf="@+id/descProducto">
+            app:layout_constraintTop_toBottomOf="@+id/cajadescripcion">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/precProducto"
@@ -78,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Precio: "
-                android:inputType="text"
+                android:inputType="number"
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,13 +95,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Imagen:" />
+                android:text="Imagen:"
+                android:textColor="@color/black"
+                android:gravity="center"/>
 
             <Button
                 android:id="@+id/aniadirimagen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/Goldfinger"
                 android:text="Subir archivo" />
 
         </LinearLayout>
@@ -125,6 +131,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:text="ADD Product"
+        android:layout_marginBottom="32dp"
+        android:textColor="@color/Goldfinger"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
