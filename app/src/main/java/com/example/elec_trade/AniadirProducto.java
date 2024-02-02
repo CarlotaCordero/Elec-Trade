@@ -12,12 +12,15 @@ import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -27,9 +30,10 @@ import java.util.Map;
 public class AniadirProducto extends AppCompatActivity {
 
     private Button aniadir, aniadirimagen;
-    private EditText nom, desc, prec;
+    private TextInputEditText nom, desc, prec;
     private FirebaseFirestore mFirestore;
     private static final int PICK_IMAGE = 100;
+    private ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,7 @@ public class AniadirProducto extends AppCompatActivity {
         prec = findViewById(R.id.precProducto);
         aniadir = findViewById(R.id.aniadir);
         aniadirimagen=findViewById(R.id.aniadirimagen);
+        imageView=findViewById(R.id.imageViewPreview);
 
 
         aniadir.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +93,7 @@ public class AniadirProducto extends AppCompatActivity {
             // Aquí puedes manejar la imagen seleccionada, por ejemplo, obtener la URI
             Uri selectedImageUri = data.getData();
             // Puedes utilizar 'selectedImageUri' como desees, por ejemplo, mostrarla en un ImageView
-            // imageView.setImageURI(selectedImageUri);
+             imageView.setImageURI(selectedImageUri);
         }
     }
 
