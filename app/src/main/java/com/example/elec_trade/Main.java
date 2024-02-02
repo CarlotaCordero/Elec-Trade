@@ -96,6 +96,12 @@ public class Main extends AppCompatActivity {
 
             }
         });
+        //Badge inflate
+        BottomNavigationMenuView bottomNavigationMenuView = (BottomNavigationMenuView) mybottomNavView.getChildAt(0);
+        View v = bottomNavigationMenuView.getChildAt(2);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+        LayoutInflater.from(this)
+                .inflate(R.layout.layout_badge, itemView, true);
     }
 
     public static void removeBadge(BottomNavigationView bottomNavigationView, @IdRes int itemId) {

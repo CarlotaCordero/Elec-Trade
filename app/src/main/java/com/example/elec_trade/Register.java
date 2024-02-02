@@ -83,9 +83,9 @@ public class Register extends AppCompatActivity {
     }
 
     private void registerUser(String uName, String uEmail, String uPass) {
-        firebaseAuth.createUserWithEmailAndPassword(uEmail, uPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        firebaseAuth.createUserWithEmailAndPassword(uEmail, uPass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+            public void onSuccess(AuthResult authResult) {
                 String id = firebaseAuth.getCurrentUser().getUid();
                 Map<String, Object> map = new HashMap<>();
                 map.put("id", id);
