@@ -1,4 +1,4 @@
-package com.example.elec_trade.Fragments;
+package com.acm.elec_trade.Fragments;
 
 import android.os.Bundle;
 
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.elec_trade.R;
+import com.acm.elec_trade.R;
 
 /**
  * A simple {@link Fragment} subclass.

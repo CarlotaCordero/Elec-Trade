@@ -1,4 +1,4 @@
-package com.example.elec_trade.Adapter;
+package com.acm.elec_trade.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.elec_trade.R;
+import com.acm.elec_trade.R;
 
 import java.util.List;
 

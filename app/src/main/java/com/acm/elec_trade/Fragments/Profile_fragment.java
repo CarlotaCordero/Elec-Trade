@@ -1,4 +1,4 @@
-package com.example.elec_trade.Fragments;
+package com.acm.elec_trade.Fragments;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,12 +17,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.acm.elec_trade.Adapter.Producto;
+import com.acm.elec_trade.Adapter.ProductoAdapter;
+import com.acm.elec_trade.Login;
 import com.bumptech.glide.Glide;
-import com.example.elec_trade.Adapter.Producto;
-import com.example.elec_trade.Adapter.ProductoAdapter;
-import com.example.elec_trade.Login;
-import com.example.elec_trade.Main;
-import com.example.elec_trade.R;
+import com.acm.elec_trade.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

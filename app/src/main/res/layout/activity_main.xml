@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/Cotton_Field"
     android:orientation="vertical"
-    tools:context=".Main">
+    tools:context="com.acm.elec_trade.Main">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"

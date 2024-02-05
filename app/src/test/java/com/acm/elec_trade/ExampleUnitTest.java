@@ -1,4 +1,4 @@
-package com.example.elec_trade;
+package com.acm.elec_trade;
 
 import org.junit.Test;
 
