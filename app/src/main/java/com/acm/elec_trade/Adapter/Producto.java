@@ -1,4 +1,4 @@
-package com.example.elec_trade.Adapter;
+package com.acm.elec_trade.Adapter;
 
 public class Producto {
 

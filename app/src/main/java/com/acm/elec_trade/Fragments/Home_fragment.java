@@ -1,4 +1,4 @@
-package com.example.elec_trade.Fragments;
+package com.acm.elec_trade.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,11 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.elec_trade.Adapter.Producto;
-import com.example.elec_trade.Adapter.ProductoAdapter;
-import com.example.elec_trade.AniadirProducto;
-import com.example.elec_trade.Main;
-import com.example.elec_trade.R;
+import com.acm.elec_trade.Adapter.Producto;
+import com.acm.elec_trade.Adapter.ProductoAdapter;
+import com.acm.elec_trade.AniadirProducto;
+import com.acm.elec_trade.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
