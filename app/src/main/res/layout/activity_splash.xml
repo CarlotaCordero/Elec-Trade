@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F3C233"
     android:backgroundTint="#F3C233"
-    tools:context=".Splash">
+    tools:context="com.acm.elec_trade.Splash">
 
 
     <ImageView

@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1026895513778:android:300383f4cbafb125d261ab",
         "android_client_info": {
-          "package_name": "com.example.elec_trade"
+          "package_name": "com.acm.elec_trade"
         }
       },
       "oauth_client": [],

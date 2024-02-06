@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.elec_trade"
+    namespace = "com.acm.elec_trade"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.elec_trade"
+        applicationId = "com.acm.elec_trade"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
