@@ -14,11 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.acm.elec_trade.Adapter.ProductAdapterFB;
+import com.acm.elec_trade.Adapter.ProductFB;
 import com.acm.elec_trade.Adapter.Producto;
 import com.acm.elec_trade.Adapter.ProductoAdapter;
 import com.acm.elec_trade.AniadirProducto;
 import com.acm.elec_trade.R;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +45,11 @@ public class Home_fragment extends Fragment {
     private String mParam2;
     //
     private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
     private ProductoAdapter productoAdapter;
+    private ProductAdapterFB mProductAdapterFB;
     private FloatingActionButton aniadirProd;
+    FirebaseFirestore firebaseFirestore;
 
     public Home_fragment() {
         // Required empty public constructor
@@ -80,6 +88,8 @@ public class Home_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Creamos el rootView
         View rootView = inflater.inflate(R.layout.fragment_home_fragment, container, false);
+        // Instanciamos el Firebase
+        firebaseFirestore = FirebaseFirestore.getInstance();
         //Instanciamos nuestros elementos
         aniadirProd = rootView.findViewById(R.id.addProduct);
         SearchView searchView = rootView.findViewById(R.id.searchView);
@@ -87,7 +97,15 @@ public class Home_fragment extends Fragment {
         int textColor = ContextCompat.getColor(requireContext(), R.color.black);
         searchEditText.setTextColor(textColor);
         // Inicializa el RecyclerView
-        inicializarRecyclerView(rootView);
+        //inicializarRecyclerView(rootView);
+        mRecyclerView = rootView.findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        Query query = firebaseFirestore.collection("products");
+        FirestoreRecyclerOptions<ProductFB> firestoreRecyclerOptions =
+                new FirestoreRecyclerOptions.Builder<ProductFB>().setQuery(query, ProductFB.class).build();
+        mProductAdapterFB = new ProductAdapterFB(firestoreRecyclerOptions);
+        mProductAdapterFB.notifyDataSetChanged();
+        mRecyclerView.setAdapter(mProductAdapterFB);
         //Accion para añadir producto
         aniadirProd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,5 +131,17 @@ public class Home_fragment extends Fragment {
 
         recyclerView.setAdapter(productoAdapter);
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mProductAdapterFB.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mProductAdapterFB.stopListening();
     }
 }
