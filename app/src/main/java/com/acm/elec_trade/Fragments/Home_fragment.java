@@ -2,26 +2,23 @@ package com.acm.elec_trade.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
-import com.acm.elec_trade.Adapter.Producto;
-import com.acm.elec_trade.Adapter.ProductoAdapter;
+import com.acm.elec_trade.Adapter.ProductAdapterFB;
+import com.acm.elec_trade.Adapter.ProductFB;
 import com.acm.elec_trade.AniadirProducto;
 import com.acm.elec_trade.R;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,9 +36,11 @@ public class Home_fragment extends Fragment {
     private String mParam1;
     private String mParam2;
     //
-    private RecyclerView recyclerView;
-    private ProductoAdapter productoAdapter;
+    private RecyclerView mRecyclerView;
+    private ProductAdapterFB mProductAdapterFB;
     private FloatingActionButton aniadirProd;
+    FirebaseFirestore firebaseFirestore;
+    SearchView search_view;
 
     public Home_fragment() {
         // Required empty public constructor
@@ -80,6 +79,8 @@ public class Home_fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Creamos el rootView
         View rootView = inflater.inflate(R.layout.fragment_home_fragment, container, false);
+        // Instanciamos el Firebase
+        firebaseFirestore = FirebaseFirestore.getInstance();
         //Instanciamos nuestros elementos
         aniadirProd = rootView.findViewById(R.id.addProduct);
         SearchView searchView = rootView.findViewById(R.id.searchView);
@@ -87,7 +88,17 @@ public class Home_fragment extends Fragment {
         int textColor = ContextCompat.getColor(requireContext(), R.color.black);
         searchEditText.setTextColor(textColor);
         // Inicializa el RecyclerView
-        inicializarRecyclerView(rootView);
+        mRecyclerView = rootView.findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        Query query = firebaseFirestore.collection("products");
+        FirestoreRecyclerOptions<ProductFB> firestoreRecyclerOptions =
+                new FirestoreRecyclerOptions.Builder<ProductFB>().setQuery(query, ProductFB.class).build();
+        mProductAdapterFB = new ProductAdapterFB(firestoreRecyclerOptions);
+        mProductAdapterFB.notifyDataSetChanged();
+        mRecyclerView.setAdapter(mProductAdapterFB);
+        //Search view
+        search_view = rootView.findViewById(R.id.searchView);
+        search_view();
         //Accion para añadir producto
         aniadirProd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,19 +110,42 @@ public class Home_fragment extends Fragment {
         return rootView;
     }
 
-    private void inicializarRecyclerView(View rootView) {
-        recyclerView = rootView.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+    private void search_view() {
+        search_view.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                textSearch(s);
+                return false;
+            }
 
-        List<Producto> productoList = new ArrayList<>();
+            @Override
+            public boolean onQueryTextChange(String s) {
+                textSearch(s);
+                return false;
+            }
+        });
+    }
+    public void textSearch(String s){
+        Query query = firebaseFirestore.collection("products");
+        FirestoreRecyclerOptions<ProductFB> firestoreRecyclerOptions =
+                new FirestoreRecyclerOptions.Builder<ProductFB>()
+                        .setQuery(query.orderBy("name")
+                                .startAt(s), ProductFB.class).build();
+        mProductAdapterFB = new ProductAdapterFB(firestoreRecyclerOptions);
+        mProductAdapterFB.startListening();
+        mRecyclerView.setAdapter(mProductAdapterFB);
+    }
 
-        for(int i = 0; i < 30; i++) {
-            productoList.add(new Producto("https://s3-symbol-logo.tradingview.com/intel--600.png","Producto"+i,"Precio"+i));
-        }
 
-        productoAdapter = new ProductoAdapter(productoList, requireContext());
+    @Override
+    public void onStart() {
+        super.onStart();
+        mProductAdapterFB.startListening();
+    }
 
-        recyclerView.setAdapter(productoAdapter);
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        mProductAdapterFB.stopListening();
     }
 }
