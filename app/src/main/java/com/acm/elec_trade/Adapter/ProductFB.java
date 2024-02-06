@@ -1,12 +1,15 @@
 package com.acm.elec_trade.Adapter;
 
-public class ProductFB {
-    String name, desc, price;
+import android.widget.ImageView;
 
-    public ProductFB(String name, String desc, String price) {
+public class ProductFB {
+    String name, desc, price, imgurl;
+
+    public ProductFB(String name, String desc, String price, String imgurl) {
         this.name = name;
         this.desc = desc;
         this.price = price;
+        this.imgurl = imgurl;
     }
 
     public ProductFB() {
@@ -34,6 +37,14 @@ public class ProductFB {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getImgurl() {
+        return imgurl;
+    }
+
+    public void setImgurl(String imgurl) {
+        this.imgurl = imgurl;
     }
 
     @Override
