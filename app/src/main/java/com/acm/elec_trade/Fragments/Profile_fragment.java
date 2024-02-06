@@ -17,11 +17,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.acm.elec_trade.Adapter.ProductAdapterFB;
+import com.acm.elec_trade.Adapter.ProductFB;
 import com.acm.elec_trade.Adapter.Producto;
 import com.acm.elec_trade.Adapter.ProductoAdapter;
 import com.acm.elec_trade.Login;
 import com.bumptech.glide.Glide;
 import com.acm.elec_trade.R;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -30,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,12 +54,14 @@ public class Profile_fragment extends Fragment {
     private String mParam1;
     private String mParam2;
     //
-    private RecyclerView recyclerView;
-    private ProductoAdapter productoAdapter;
+
     private Button lOut;
     private ImageView profilePic;
     private TextView uName, uEmail;
+    private RecyclerView mRecyclerView;
+    private ProductAdapterFB mProductAdapterFB;
     private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
     public Profile_fragment() {
         // Required empty public constructor
     }
@@ -91,8 +97,9 @@ public class Profile_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         firebaseAuth = FirebaseAuth.getInstance();  // Inicializa firebaseAuth
-        // Obtener la referencia a la base de datos
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // Instanciamos el Firebase
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        // Instanciamos el Firebase
         // Creamos el rootView
         View rootView = inflater.inflate(R.layout.fragment_profile_fragment, container, false);
         lOut = rootView.findViewById(R.id.logout);
@@ -106,12 +113,12 @@ public class Profile_fragment extends Fragment {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         uName = rootView.findViewById(R.id.profileName);
         String uid = user.getUid();
-        DocumentReference userReference = db.collection("user").document(uid);
+        DocumentReference userReference = firebaseFirestore.collection("user").document(uid);
         bucarUsuario(userReference);
         uEmail = rootView.findViewById(R.id.profileEmail);
         uEmail.setText(user.getEmail().toString());
         // Inicializa el RecyclerView
-        inicializarRecyclerView(rootView);
+        inicializarRecyclerView(rootView, uid);
         //Subir foto con glide
         profilePic = rootView.findViewById(R.id.profilePic);
         Glide.with(requireContext())
@@ -152,20 +159,15 @@ public class Profile_fragment extends Fragment {
         requireActivity().finish();
     }
 
-    private void inicializarRecyclerView(View rootView) {
-        recyclerView = rootView.findViewById(R.id.reciclerProfile);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-        List<Producto> productoList = new ArrayList<>();
-
-        for(int i = 0; i < 30; i++) {
-            productoList.add(new Producto("https://s3-symbol-logo.tradingview.com/intel--600.png","Producto"+i,"Precio"+i));
-        }
-
-        productoAdapter = new ProductoAdapter(productoList, requireContext());
-
-        recyclerView.setAdapter(productoAdapter);
-
+    private void inicializarRecyclerView(View rootView, String uid) {
+        mRecyclerView = rootView.findViewById(R.id.reciclerProfile);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        Query query = firebaseFirestore.collection("products").whereEqualTo("userP", uid);
+        FirestoreRecyclerOptions<ProductFB> firestoreRecyclerOptions =
+                new FirestoreRecyclerOptions.Builder<ProductFB>().setQuery(query, ProductFB.class).build();
+        mProductAdapterFB = new ProductAdapterFB(firestoreRecyclerOptions);
+        mProductAdapterFB.notifyDataSetChanged();
+        mRecyclerView.setAdapter(mProductAdapterFB);
     }
 
     private void bucarUsuario(DocumentReference userReference) {
@@ -175,11 +177,9 @@ public class Profile_fragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        // Los datos del usuario existen en Firestore
                         // Obtener los datos del usuario
                         String username = document.getString("name");
-
-                        // Hacer algo con el nombre de usuario (por ejemplo, establecerlo en un TextView)
+                        //Se cambia el texto por el nombre de usuario
                         uName.setText(username);
                     } else {
                         // El documento del usuario no existe en Firestore
@@ -188,9 +188,20 @@ public class Profile_fragment extends Fragment {
                 } else {
                     // Manejar errores de lectura de Firestore si es necesario
                     Exception exception = task.getException();
-                    // ...
                 }
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mProductAdapterFB.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mProductAdapterFB.stopListening();
     }
 }
