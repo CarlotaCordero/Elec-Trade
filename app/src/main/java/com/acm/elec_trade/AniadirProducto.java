@@ -140,7 +140,7 @@ public class AniadirProducto extends AppCompatActivity {
         map.put("name", nProd);
         map.put("desc", dProd);
         map.put("price", pProd);
-        map.put("img-url", imageUrl);
+        map.put("imgurl", imageUrl);
         map.put("userP", uid);
 
         mFirestore.collection("products").add(map)
