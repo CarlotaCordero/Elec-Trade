@@ -14,12 +14,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.acm.elec_trade.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,24 +33,33 @@ public class AniadirProducto extends AppCompatActivity {
     private Button aniadir, aniadirimagen;
     private TextInputEditText nom, desc, prec;
     private FirebaseFirestore mFirestore;
+    private FirebaseStorage mFirebaseStorage;
+    private StorageReference mStorageReference;
     private static final int PICK_IMAGE = 100;
     private ImageView imageView;
+    private Uri selectedImageUri;
+    private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aniadir_producto);
-        //Configuracion Barra superior
         topBar();
 
         mFirestore = FirebaseFirestore.getInstance();
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        mStorageReference = mFirebaseStorage.getReference();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String uid = user.getUid();
 
         nom = findViewById(R.id.nomProducto);
         desc = findViewById(R.id.descProducto);
         prec = findViewById(R.id.precProducto);
         aniadir = findViewById(R.id.aniadir);
-        aniadirimagen=findViewById(R.id.aniadirimagen);
-        imageView=findViewById(R.id.imageViewPreview);
-
+        aniadirimagen = findViewById(R.id.aniadirimagen);
+        imageView = findViewById(R.id.imageViewPreview);
 
         aniadir.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,11 +71,10 @@ public class AniadirProducto extends AppCompatActivity {
                 if (nProd.isEmpty() || dProd.isEmpty() || pProd.isEmpty()) {
                     Toast.makeText(AniadirProducto.this, "Ingrese los datos", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Verificar la longitud del campo de descripción
                     if (dProd.length() > 400) {
                         Toast.makeText(AniadirProducto.this, "La descripción no puede superar los 400 caracteres", Toast.LENGTH_SHORT).show();
                     } else {
-                        postProd(nProd, dProd, pProd);
+                        postProd(nProd, dProd, pProd, uid);
                     }
                 }
             }
@@ -74,7 +86,6 @@ public class AniadirProducto extends AppCompatActivity {
                 openGallery();
             }
         });
-
     }
 
     private void openGallery() {
@@ -83,44 +94,75 @@ public class AniadirProducto extends AppCompatActivity {
         startActivityForResult(galleryIntent, PICK_IMAGE);
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == PICK_IMAGE) {
-            // Aquí puedes manejar la imagen seleccionada, por ejemplo, obtener la URI
-            Uri selectedImageUri = data.getData();
-            // Puedes utilizar 'selectedImageUri' como desees, por ejemplo, mostrarla en un ImageView
-             imageView.setImageURI(selectedImageUri);
+            selectedImageUri = data.getData();
+            imageView.setImageURI(selectedImageUri);
         }
     }
 
+    private void postProd(String nProd, String dProd, String pProd, String uid) {
+        if (selectedImageUri != null) {
+            uploadImage(selectedImageUri, nProd, dProd, pProd, uid);
+        } else {
+            finish();
+        }
+    }
 
-    private void postProd(String nProd, String dProd, String pProd) {
+    private void uploadImage(Uri imageUri, final String nProd, final String dProd, final String pProd, final String uid) {
+        final StorageReference imageRef = mStorageReference.child("images/" + System.currentTimeMillis() + ".jpg");
+
+        imageRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                saveImageUrlToFirestore(nProd, dProd, pProd, uri.toString(),uid);
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AniadirProducto.this, "Error al subir la imagen", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void saveImageUrlToFirestore(String nProd, String dProd, String pProd, String imageUrl, String uid) {
         Map<String, Object> map = new HashMap<>();
         map.put("name", nProd);
         map.put("desc", dProd);
         map.put("price", pProd);
-        mFirestore.collection("products").add(map).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            //Never enters on on Success or onFailure function
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Toast.makeText(AniadirProducto.this, "Producto subido con exito", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AniadirProducto.this, "Error al ingresar producto", Toast.LENGTH_SHORT).show();
-            }
-        });
+        map.put("imgurl", imageUrl);
+        map.put("userP", uid);
+
+        mFirestore.collection("products").add(map)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(AniadirProducto.this, "Producto subido con éxito", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AniadirProducto.this, "Error al ingresar el producto", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
-    public void topBar() {
+    private void topBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            // Configura el color del título, por ejemplo
             actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Añadir Producto</font>"));
         }
     }
-
 }
