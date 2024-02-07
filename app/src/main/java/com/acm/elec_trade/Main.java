@@ -37,17 +37,14 @@ public class Main extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.home) {
                     item.setChecked(true);
-                    Toast.makeText(Main.this, "Home", Toast.LENGTH_SHORT).show();
                     removeBadge(mybottomNavView,item.getItemId());
                     viewPager.setCurrentItem(0);
                 } else if (item.getItemId() == R.id.cart) {
                     item.setChecked(true);
-                    Toast.makeText(Main.this, "Cart", Toast.LENGTH_SHORT).show();
                     removeBadge(mybottomNavView,item.getItemId());
                     viewPager.setCurrentItem(1);
                 } else if (item.getItemId() == R.id.profile) {
                     item.setChecked(true);
-                    Toast.makeText(Main.this, "Profile", Toast.LENGTH_SHORT).show();
                     removeBadge(mybottomNavView,item.getItemId());
                     viewPager.setCurrentItem(2);
                 }
