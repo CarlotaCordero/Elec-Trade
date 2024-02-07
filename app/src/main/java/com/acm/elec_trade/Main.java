@@ -40,21 +40,16 @@ public class Main extends AppCompatActivity {
                     Toast.makeText(Main.this, "Home", Toast.LENGTH_SHORT).show();
                     removeBadge(mybottomNavView,item.getItemId());
                     viewPager.setCurrentItem(0);
-                } else if (item.getItemId() == R.id.chat) {
-                    item.setChecked(true);
-                    Toast.makeText(Main.this, "Chats", Toast.LENGTH_SHORT).show();
-                    removeBadge(mybottomNavView,item.getItemId());
-                    viewPager.setCurrentItem(1);
                 } else if (item.getItemId() == R.id.cart) {
                     item.setChecked(true);
                     Toast.makeText(Main.this, "Cart", Toast.LENGTH_SHORT).show();
                     removeBadge(mybottomNavView,item.getItemId());
-                    viewPager.setCurrentItem(2);
+                    viewPager.setCurrentItem(1);
                 } else if (item.getItemId() == R.id.profile) {
                     item.setChecked(true);
                     Toast.makeText(Main.this, "Profile", Toast.LENGTH_SHORT).show();
                     removeBadge(mybottomNavView,item.getItemId());
-                    viewPager.setCurrentItem(3);
+                    viewPager.setCurrentItem(2);
                 }
                 return false;
             }
@@ -82,7 +77,7 @@ public class Main extends AppCompatActivity {
         });
         //Badge inflate
         BottomNavigationMenuView bottomNavigationMenuView = (BottomNavigationMenuView) mybottomNavView.getChildAt(0);
-        View v = bottomNavigationMenuView.getChildAt(2);
+        View v = bottomNavigationMenuView.getChildAt(1);
         BottomNavigationItemView itemView = (BottomNavigationItemView) v;
         LayoutInflater.from(this)
                 .inflate(R.layout.layout_badge, itemView, true);
@@ -91,7 +86,7 @@ public class Main extends AppCompatActivity {
     public static void removeBadge(BottomNavigationView bottomNavigationView, @IdRes int itemId) {
         BottomNavigationItemView itemView = bottomNavigationView.findViewById(itemId);
         if (itemView.getChildCount() == 3) {
-            itemView.removeViewAt(2);
+            //itemView.removeViewAt(2);
         }
     }
 

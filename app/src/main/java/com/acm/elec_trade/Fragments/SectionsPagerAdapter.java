@@ -19,10 +19,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new Home_fragment();
             case 1:
-                return new Chat_fragment();
-            case 2:
                 return new Cart_fragment();
-            case 3:
+            case 2:
                 return new Profile_fragment();
             default:
                 return null;
@@ -31,6 +29,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 }
