@@ -11,12 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import com.acm.elec_trade.Adapter.ProductAdapterFB;
 import com.acm.elec_trade.Adapter.ProductFB;
 import com.acm.elec_trade.AniadirProducto;
 import com.acm.elec_trade.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -95,6 +98,17 @@ public class Home_fragment extends Fragment {
                 new FirestoreRecyclerOptions.Builder<ProductFB>().setQuery(query, ProductFB.class).build();
         mProductAdapterFB = new ProductAdapterFB(firestoreRecyclerOptions);
         mProductAdapterFB.notifyDataSetChanged();
+        mProductAdapterFB.setOnItemClickListener(new ProductAdapterFB.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                // Obtén el modelo de producto correspondiente al documento
+                ProductFB clickedProduct = documentSnapshot.toObject(ProductFB.class);
+
+                // Implementa la lógica para abrir el nuevo Activity aquí
+                // Puedes usar Intent para iniciar un nuevo Activity, pasando la información necesaria
+                Toast.makeText(getContext(), "Pulsaste la tarjeta " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
         mRecyclerView.setAdapter(mProductAdapterFB);
         //Search view
         search_view = rootView.findViewById(R.id.searchView);
@@ -133,6 +147,17 @@ public class Home_fragment extends Fragment {
                                 .startAt(s), ProductFB.class).build();
         mProductAdapterFB = new ProductAdapterFB(firestoreRecyclerOptions);
         mProductAdapterFB.startListening();
+        mProductAdapterFB.setOnItemClickListener(new ProductAdapterFB.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                // Obtén el modelo de producto correspondiente al documento
+                ProductFB clickedProduct = documentSnapshot.toObject(ProductFB.class);
+
+                // Implementa la lógica para abrir el nuevo Activity aquí
+                // Puedes usar Intent para iniciar un nuevo Activity, pasando la información necesaria
+                Toast.makeText(getContext(), "Pulsaste la tarjeta " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
         mRecyclerView.setAdapter(mProductAdapterFB);
     }
 
