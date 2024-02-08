@@ -21,6 +21,8 @@ import com.acm.elec_trade.Adapter.ProductAdapterFB;
 import com.acm.elec_trade.Adapter.ProductFB;
 import com.acm.elec_trade.Adapter.Producto;
 import com.acm.elec_trade.Adapter.ProductoAdapter;
+import com.acm.elec_trade.AniadirProducto;
+import com.acm.elec_trade.Edit_profile;
 import com.acm.elec_trade.Login;
 import com.bumptech.glide.Glide;
 import com.acm.elec_trade.R;
@@ -55,7 +57,7 @@ public class Profile_fragment extends Fragment {
     private String mParam2;
     //
 
-    private Button lOut;
+    private Button lOut, edit;
     private ImageView profilePic;
     private TextView uName, uEmail;
     private RecyclerView mRecyclerView;
@@ -107,6 +109,16 @@ public class Profile_fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 showLogoutConfirmationDialog();
+            }
+        });
+
+        //Asignamos el boton de edit para cambiar de actividad
+        edit = rootView.findViewById(R.id.editData);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editProfile = new Intent(requireActivity(), Edit_profile.class);
+                startActivity(editProfile);
             }
         });
         //Sacar datos de usuario
