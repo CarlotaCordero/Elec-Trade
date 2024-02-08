@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.acm.elec_trade.Adapter.ProductAdapterFB;
 import com.acm.elec_trade.Adapter.ProductFB;
@@ -167,6 +168,17 @@ public class Profile_fragment extends Fragment {
                 new FirestoreRecyclerOptions.Builder<ProductFB>().setQuery(query, ProductFB.class).build();
         mProductAdapterFB = new ProductAdapterFB(firestoreRecyclerOptions);
         mProductAdapterFB.notifyDataSetChanged();
+        mProductAdapterFB.setOnItemClickListener(new ProductAdapterFB.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                // Obtén el modelo de producto correspondiente al documento
+                ProductFB clickedProduct = documentSnapshot.toObject(ProductFB.class);
+
+                // Implementa la lógica para abrir el nuevo Activity aquí
+                // Puedes usar Intent para iniciar un nuevo Activity, pasando la información necesaria
+                Toast.makeText(getContext(), "Pulsaste la tarjeta " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
         mRecyclerView.setAdapter(mProductAdapterFB);
     }
 
