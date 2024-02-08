@@ -23,6 +23,9 @@
             android:name=".Edit_profile"
             android:exported="false" />
         <activity
+            android:name=".ProductoDetalle"
+            android:exported="true" />
+        <activity
             android:name=".AniadirProducto"
             android:exported="false"
             android:parentActivityName=".Main"
