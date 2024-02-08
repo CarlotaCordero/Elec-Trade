@@ -147,6 +147,17 @@ public class Home_fragment extends Fragment {
                                 .startAt(s), ProductFB.class).build();
         mProductAdapterFB = new ProductAdapterFB(firestoreRecyclerOptions);
         mProductAdapterFB.startListening();
+        mProductAdapterFB.setOnItemClickListener(new ProductAdapterFB.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                // Obtén el modelo de producto correspondiente al documento
+                ProductFB clickedProduct = documentSnapshot.toObject(ProductFB.class);
+
+                // Implementa la lógica para abrir el nuevo Activity aquí
+                // Puedes usar Intent para iniciar un nuevo Activity, pasando la información necesaria
+                Toast.makeText(getContext(), "Pulsaste la tarjeta " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
         mRecyclerView.setAdapter(mProductAdapterFB);
     }
 
