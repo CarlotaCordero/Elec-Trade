@@ -21,7 +21,9 @@
         tools:targetApi="31">
         <activity
             android:name=".Edit_profile"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".Main"
+            android:theme="@style/Theme.Elec_Trade"/>
         <activity
             android:name=".ProductoDetalle"
             android:exported="true" />
