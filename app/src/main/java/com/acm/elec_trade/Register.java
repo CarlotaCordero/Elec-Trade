@@ -87,6 +87,8 @@ public class Register extends AppCompatActivity {
             @Override
             public void onSuccess(AuthResult authResult) {
                 String id = firebaseAuth.getCurrentUser().getUid();
+                //Crear la coleccion Cart para los usuarios
+                createCartCollection(id);
                 Map<String, Object> map = new HashMap<>();
                 map.put("id", id);
                 map.put("name", uName);
@@ -131,6 +133,18 @@ public class Register extends AppCompatActivity {
         userEmail.setErrorEnabled(false);
         userPass.setErrorEnabled(false);
         userPassRep.setErrorEnabled(false);
+    }
+
+    private void createCartCollection(String userId) {
+        // Crear la colección "cart" dentro de cada usuario
+        Map<String, Object> cartMap = new HashMap<>();
+        firestore.collection("user").document(userId).collection("cart")
+                .add(cartMap)
+                .addOnSuccessListener(documentReference -> {
+                    // La colección "cart" se creó con éxito
+                    showToast("Colección 'cart' creada para el usuario");
+                })
+                .addOnFailureListener(e -> showToast("Error al crear la colección 'cart': " + e.getMessage()));
     }
 
 }
