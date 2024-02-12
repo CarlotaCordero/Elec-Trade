@@ -235,10 +235,6 @@ public class Edit_profile extends AppCompatActivity {
             deleteAccountButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Agrega aquí la lógica para eliminar la cuenta del usuario de Firebase
-                    // Por ejemplo, muestra un diálogo de confirmación antes de eliminar la cuenta
-                    // y luego llama a un método para eliminar la cuenta.
-                    // Asegúrate de manejar la autenticación y los datos en Firestore según sea necesario.
                     showDeleteAccountDialog();
                 }
             });
@@ -274,21 +270,63 @@ public class Edit_profile extends AppCompatActivity {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (currentUser != null) {
-            // Eliminar la cuenta del usuario actual
+            String userId = currentUser.getUid();
+
+            // Eliminar los productos del usuario actual en Firestore
+            deleteUserProducts(userId);
+
+            // Eliminar la cuenta del usuario actual en Firestore
+            deleteFirestoreUserData(userId);
+
+            // Eliminar la cuenta del usuario actual en Firebase Authentication
             currentUser.delete()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             // La cuenta ha sido eliminada exitosamente
-                            // Aquí también puedes realizar otras acciones como limpiar datos en Firestore
-                            // y cualquier otro proceso necesario antes de cerrar la aplicación o redirigir a otra actividad
-                            Toast.makeText(Edit_profile.this, "Account successfully deleted.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Edit_profile.this, "Cuenta eliminada con éxito", Toast.LENGTH_SHORT).show();
                             openLoginActivity(); // Redirige a la pantalla de inicio de sesión u otra actividad según sea necesario
                         } else {
                             // Error al eliminar la cuenta
-                            Toast.makeText(Edit_profile.this, "Error while deleting the account.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Edit_profile.this, "Error al eliminar la cuenta", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
+    }
+
+    private void deleteFirestoreUserData(String userId) {
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+        // Acceder al documento del usuario en Firestore y eliminarlo
+        DocumentReference userRef = firebaseFirestore.collection("user").document(userId);
+        userRef.delete()
+                .addOnSuccessListener(aVoid -> {
+                    // Éxito al eliminar el documento en Firestore
+                    // Puedes agregar más lógica aquí si es necesario
+                })
+                .addOnFailureListener(e -> {
+                    // Error al eliminar el documento en Firestore
+                    Toast.makeText(Edit_profile.this, "Error al eliminar la información en Firestore", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void deleteUserProducts(String userId) {
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+        // Acceder a la colección "products" y eliminar los productos del usuario
+        firebaseFirestore.collection("products")
+                .whereEqualTo("userP", userId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (DocumentSnapshot document : task.getResult()) {
+                            // Eliminar cada producto asociado al usuario
+                            document.getReference().delete();
+                        }
+                    } else {
+                        // Error al obtener los productos del usuario
+                        Toast.makeText(Edit_profile.this, "Error al obtener los productos del usuario", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void openLoginActivity() {
