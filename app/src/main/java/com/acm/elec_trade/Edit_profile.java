@@ -1,10 +1,14 @@
 package com.acm.elec_trade;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -211,8 +216,88 @@ public class Edit_profile extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Edit Profile</font>"));
+
+            // Agrega un botón de eliminación de cuenta a la barra de acciones
+            actionBar.setDisplayOptions(actionBar.getDisplayOptions() | ActionBar.DISPLAY_SHOW_CUSTOM);
+            TextView deleteAccountButton = new TextView(actionBar.getThemedContext());
+            deleteAccountButton.setText("DELETE");
+            deleteAccountButton.setTextColor(Color.parseColor("#F2EFE9"));
+            deleteAccountButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16); // Cambia el tamaño del texto según sea necesario
+            ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
+                    ActionBar.LayoutParams.WRAP_CONTENT,
+                    ActionBar.LayoutParams.WRAP_CONTENT,
+                    Gravity.END | Gravity.CENTER_VERTICAL
+            );
+            layoutParams.rightMargin = 16; // Ajusta el margen derecho según sea necesario
+            deleteAccountButton.setLayoutParams(layoutParams);
+            actionBar.setCustomView(deleteAccountButton);
+
+            deleteAccountButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Agrega aquí la lógica para eliminar la cuenta del usuario de Firebase
+                    // Por ejemplo, muestra un diálogo de confirmación antes de eliminar la cuenta
+                    // y luego llama a un método para eliminar la cuenta.
+                    // Asegúrate de manejar la autenticación y los datos en Firestore según sea necesario.
+                    showDeleteAccountDialog();
+                }
+            });
         }
     }
+
+    private void showDeleteAccountDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Account");
+        builder.setMessage("Are you sure you want to delete your account? This action cannot be undone.");
+
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Usuario ha confirmado la eliminación, proceder con la eliminación de la cuenta
+                deleteAccount();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Usuario ha cancelado la eliminación, cerrar el diálogo
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void deleteAccount() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentUser != null) {
+            // Eliminar la cuenta del usuario actual
+            currentUser.delete()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            // La cuenta ha sido eliminada exitosamente
+                            // Aquí también puedes realizar otras acciones como limpiar datos en Firestore
+                            // y cualquier otro proceso necesario antes de cerrar la aplicación o redirigir a otra actividad
+                            Toast.makeText(Edit_profile.this, "Account successfully deleted.", Toast.LENGTH_SHORT).show();
+                            openLoginActivity(); // Redirige a la pantalla de inicio de sesión u otra actividad según sea necesario
+                        } else {
+                            // Error al eliminar la cuenta
+                            Toast.makeText(Edit_profile.this, "Error while deleting the account.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+    private void openLoginActivity() {
+        // Se puede usar un Intent para abrir la actividad correspondiente
+        Intent loginIntent = new Intent(Edit_profile.this, Login.class);
+        startActivity(loginIntent);
+        finishAffinity();
+    }
+
 
     private void openMainActivity() {
         Intent mainIntent = new Intent(Edit_profile.this, Main.class);
