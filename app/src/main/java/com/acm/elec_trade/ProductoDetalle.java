@@ -140,11 +140,11 @@ public class ProductoDetalle extends AppCompatActivity {
 
                             // Crear un mapa con los datos del producto
                             Map<String, Object> productoCarrito = new HashMap<>();
-                            productoCarrito.put("nombre", nombreProducto);
-                            productoCarrito.put("descripcion", descripcion);
-                            productoCarrito.put("precio", precio);
-                            productoCarrito.put("imagen", photo);
-                            productoCarrito.put("usuario", userId); // Agregar el UID del usuario que subió el producto
+                            productoCarrito.put("name", nombreProducto);
+                            productoCarrito.put("desc", descripcion);
+                            productoCarrito.put("price", precio);
+                            productoCarrito.put("imgurl", photo);
+                            productoCarrito.put("userP", userId); // Agregar el UID del usuario que subió el producto
 
                             // Agregar el producto a la colección "cart" del usuario
                             firebaseFirestore.collection("user").document(uid).collection("cart")
