@@ -20,8 +20,7 @@ import android.widget.Toast;
 
 import com.acm.elec_trade.Adapter.ProductAdapterFB;
 import com.acm.elec_trade.Adapter.ProductFB;
-import com.acm.elec_trade.Adapter.Producto;
-import com.acm.elec_trade.Adapter.ProductoAdapter;
+import com.acm.elec_trade.Edit_profile;
 import com.acm.elec_trade.Login;
 import com.bumptech.glide.Glide;
 import com.acm.elec_trade.R;
@@ -36,9 +35,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Profile_fragment#newInstance} factory method to
@@ -46,63 +42,29 @@ import java.util.List;
  */
 public class Profile_fragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    //
-
-    private Button lOut;
+    private Button lOut, edit;
     private ImageView profilePic;
     private TextView uName, uEmail;
     private RecyclerView mRecyclerView;
     private ProductAdapterFB mProductAdapterFB;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
+
     public Profile_fragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Profile_fragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Profile_fragment newInstance(String param1, String param2) {
-        Profile_fragment fragment = new Profile_fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static Profile_fragment newInstance() {
+        return new Profile_fragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        firebaseAuth = FirebaseAuth.getInstance();  // Inicializa firebaseAuth
-        // Instanciamos el Firebase
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        // Instanciamos el Firebase
-        // Creamos el rootView
+
         View rootView = inflater.inflate(R.layout.fragment_profile_fragment, container, false);
+
         lOut = rootView.findViewById(R.id.logout);
         lOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,44 +72,84 @@ public class Profile_fragment extends Fragment {
                 showLogoutConfirmationDialog();
             }
         });
-        //Sacar datos de usuario
+
+        edit = rootView.findViewById(R.id.editData);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editProfile = new Intent(requireActivity(), Edit_profile.class);
+                startActivity(editProfile);
+            }
+        });
+
         FirebaseUser user = firebaseAuth.getCurrentUser();
         uName = rootView.findViewById(R.id.profileName);
         String uid = user.getUid();
         DocumentReference userReference = firebaseFirestore.collection("user").document(uid);
         bucarUsuario(userReference);
+
         uEmail = rootView.findViewById(R.id.profileEmail);
         uEmail.setText(user.getEmail().toString());
-        // Inicializa el RecyclerView
+
         inicializarRecyclerView(rootView, uid);
-        //Subir foto con glide
+
         profilePic = rootView.findViewById(R.id.profilePic);
-        Glide.with(requireContext())
-                .load(R.drawable.user_icon)
-                .circleCrop()
-                .into(profilePic);
+
+        // Obtener la URL de la foto de perfil del usuario desde Firestore
+        userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Obtener la URL de la foto de perfil del documento del usuario
+                        String photoUrl = document.getString("fotoperfil");
+
+                        // Cargar la foto de perfil con Glide
+                        if (photoUrl != null && !photoUrl.isEmpty()) {
+                            Glide.with(requireContext())
+                                    .load(photoUrl)
+                                    .circleCrop()
+                                    .into(profilePic);
+                        } else {
+                            // Si no hay foto de perfil, muestra la imagen predeterminada
+                            Glide.with(requireContext())
+                                    .load(R.drawable.user_icon)
+                                    .circleCrop()
+                                    .into(profilePic);
+                        }
+                    } else {
+                        // El documento del usuario no existe en Firestore
+                        // Puedes manejar esto según tus necesidades
+                    }
+                } else {
+                    // Manejar errores de lectura de Firestore si es necesario
+                    Exception exception = task.getException();
+                }
+            }
+        });
+
         return rootView;
     }
 
     private void showLogoutConfirmationDialog() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-            builder.setTitle("LOGOUT");
-            builder.setCancelable(false);
-            //Set buttons
-            builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    firebaseAuth.signOut();
-                    goToLogin();
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-        //Create dialog
+        builder.setTitle("LOGOUT");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                firebaseAuth.signOut();
+                goToLogin();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -191,7 +193,6 @@ public class Profile_fragment extends Fragment {
                     if (document.exists()) {
                         // Obtener los datos del usuario
                         String username = document.getString("name");
-                        //Se cambia el texto por el nombre de usuario
                         uName.setText(username);
                     } else {
                         // El documento del usuario no existe en Firestore
