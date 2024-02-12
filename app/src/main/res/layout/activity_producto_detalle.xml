@@ -18,7 +18,7 @@
     <ImageView
         android:id="@+id/photoProduct"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         app:layout_constraintEnd_toStartOf="@+id/guidelineDer"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,14 +41,16 @@
     <TextView
         android:id="@+id/descriptionProduct"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:layout_marginTop="8dp"
         android:text="descriptionProduct"
         android:textColor="@color/black"
         android:textSize="16dp"
         app:layout_constraintEnd_toStartOf="@+id/guidelineDer"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
-        app:layout_constraintTop_toBottomOf="@id/nameProduct" />
+        app:layout_constraintTop_toBottomOf="@id/nameProduct"
+        android:background="@drawable/borde_buscador"
+        android:padding="8dp"/>
 
 
     <LinearLayout
@@ -65,9 +67,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="priceProduct"
-            android:textColor="@color/black"
-            android:textSize="16dp"
-            android:layout_weight="1"/>
+            android:textColor="@color/Goldfinger"
+            android:textSize="24dp"
+            android:layout_weight="1"
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/addCart"
@@ -88,20 +91,21 @@
         app:layout_constraintEnd_toEndOf="@id/guidelineDer"
         app:layout_constraintStart_toStartOf="@id/guidelineIzq"
         android:layout_marginBottom="32dp"
-        app:cardCornerRadius="5dp">
+        app:cardCornerRadius="5dp"
+        android:backgroundTint="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:orientation="vertical"
-                android:layout_marginLeft="16dp">
+                android:layout_marginLeft="8dp">
 
                 <TextView
                     android:id="@+id/userName"
@@ -119,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:text="userMail"
                     android:textColor="@color/black"
-                    android:textSize="16dp"/>
+                    android:textSize="10dp"/>
 
             </LinearLayout>
 
@@ -127,9 +131,9 @@
                 android:id="@+id/contactUser"
                 android:layout_width="24dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="Contact"
-                android:layout_marginRight="16dp"/>
+                android:layout_marginRight="8dp"/>
 
         </LinearLayout>
 

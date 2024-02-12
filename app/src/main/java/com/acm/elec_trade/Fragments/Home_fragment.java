@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.acm.elec_trade.Adapter.ProductAdapterFB;
 import com.acm.elec_trade.Adapter.ProductFB;
 import com.acm.elec_trade.AniadirProducto;
+import com.acm.elec_trade.ProductoDetalle;
 import com.acm.elec_trade.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -98,14 +99,17 @@ public class Home_fragment extends Fragment {
                 new FirestoreRecyclerOptions.Builder<ProductFB>().setQuery(query, ProductFB.class).build();
         mProductAdapterFB = new ProductAdapterFB(firestoreRecyclerOptions);
         mProductAdapterFB.notifyDataSetChanged();
+        mProductAdapterFB.startListening();
         mProductAdapterFB.setOnItemClickListener(new ProductAdapterFB.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 // Obtén el modelo de producto correspondiente al documento
                 ProductFB clickedProduct = documentSnapshot.toObject(ProductFB.class);
-
                 // Implementa la lógica para abrir el nuevo Activity aquí
+                Intent intent = new Intent(getContext(), ProductoDetalle.class);
+                intent.putExtra("idProducto", clickedProduct.getName());
                 // Puedes usar Intent para iniciar un nuevo Activity, pasando la información necesaria
+                startActivity(intent);
                 Toast.makeText(getContext(), "Pulsaste la tarjeta " + position, Toast.LENGTH_SHORT).show();
             }
         });
@@ -152,25 +156,40 @@ public class Home_fragment extends Fragment {
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 // Obtén el modelo de producto correspondiente al documento
                 ProductFB clickedProduct = documentSnapshot.toObject(ProductFB.class);
-
                 // Implementa la lógica para abrir el nuevo Activity aquí
+                Intent intent = new Intent(getContext(), ProductoDetalle.class);
+                intent.putExtra("idProducto", clickedProduct.getName());
                 // Puedes usar Intent para iniciar un nuevo Activity, pasando la información necesaria
+                startActivity(intent);
                 Toast.makeText(getContext(), "Pulsaste la tarjeta " + position, Toast.LENGTH_SHORT).show();
             }
         });
         mRecyclerView.setAdapter(mProductAdapterFB);
     }
 
-
-    @Override
+    //Revisar
+    /*@Override
     public void onStart() {
         super.onStart();
         mProductAdapterFB.startListening();
+    }*/
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mProductAdapterFB.stopListening();
     }
+    //Revisar
+    /*@Override
+    public void onResume() {
+        super.onResume();
+        mProductAdapterFB.startListening();
+    }*/
 
     @Override
     public void onStop() {
         super.onStop();
         mProductAdapterFB.stopListening();
     }
+
 }
