@@ -81,12 +81,12 @@ public class Cart_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Creamos el rootView
-        View rootView = inflater.inflate(R.layout.fragment_home_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_cart_fragment, container, false);
         // Instanciamos el Firebase
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         // Inicializa el RecyclerView
-        recyclerViewCart = rootView.findViewById(R.id.recyclerView);
+        recyclerViewCart = rootView.findViewById(R.id.recyclerViewCart);
         recyclerViewCart.setLayoutManager(new LinearLayoutManager(requireContext()));
         // Obtén el UID del usuario actual
         String uid = firebaseAuth.getCurrentUser().getUid();
