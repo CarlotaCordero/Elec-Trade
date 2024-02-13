@@ -3,7 +3,6 @@ package com.acm.elec_trade;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.acm.elec_trade.Main;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,7 +38,7 @@ public class ProductoDetalle extends AppCompatActivity {
         obtenerDatosUsuario(nombreProducto);
         TextView nProd = findViewById(R.id.nameProduct);
         nProd.setText(nombreProducto);
-        // Boton para añadir al carrito
+        //Boton para añadir al carrito
         Button cart = findViewById(R.id.addCart);
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,22 +46,6 @@ public class ProductoDetalle extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 String uid = user.getUid();
                 aniadirAlCarrito(uid, nombreProducto);
-            }
-        });
-
-        // Botón de contacto con el usuario
-        Button contactUser = findViewById(R.id.contactUser);
-        contactUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Obtener el nombre y el correo del vendedor
-                TextView userNameTextView = findViewById(R.id.userName);
-                String nombreVendedor = userNameTextView.getText().toString();
-                TextView userEmailTextView = findViewById(R.id.userMail);
-                String correoVendedor = userEmailTextView.getText().toString();
-
-                // Abrir el correo con el nombre del vendedor ya escrito
-                abrirCorreoConNombreVendedor(nombreVendedor, correoVendedor);
             }
         });
     }
@@ -80,11 +62,12 @@ public class ProductoDetalle extends AppCompatActivity {
                             String descripcion = document.getString("desc");
                             String precio = document.getString("price");
                             String photo = document.getString("imgurl");
+                            //String userProd = document.getString("userP");
+                            // Ahora puedes usar la información como desees
                             mostrarDatosEnLaInterfaz(descripcion, precio, photo);
                         }
                     } else {
                         // Error al realizar la consulta
-                        showToast("Error al obtener datos del producto: " + task.getException().getMessage());
                     }
                 });
     }
@@ -102,22 +85,23 @@ public class ProductoDetalle extends AppCompatActivity {
                             firebaseFirestore.collection("user")
                                     .whereEqualTo("id", userId)
                                     .get().addOnCompleteListener(task1 -> {
-                                        if (task1.isSuccessful()) {
+                                        if (task1.isSuccessful()) { // Corregir aquí
                                             for (QueryDocumentSnapshot d : task1.getResult()) {
                                                 // El documento existe, ahora puedes obtener más datos
                                                 String userName = d.getString("name");
                                                 String userMail = d.getString("email");
+                                                // Ahora puedes usar la información como desees
                                                 mostrarDatosEnLaInterfazUsuario(userName, userMail);
                                             }
                                         } else {
                                             // Error al realizar la segunda consulta
-                                            showToast("Error al obtener datos del usuario: " + task1.getException().getMessage());
+                                            // Maneja el error de alguna manera
                                         }
                                     });
                         }
                     } else {
                         // Error al realizar la primera consulta
-                        showToast("Error al obtener datos del producto: " + task.getException().getMessage());
+                        // Maneja el error de alguna manera
                     }
                 });
     }
@@ -156,11 +140,11 @@ public class ProductoDetalle extends AppCompatActivity {
 
                             // Crear un mapa con los datos del producto
                             Map<String, Object> productoCarrito = new HashMap<>();
-                            productoCarrito.put("nombre", nombreProducto);
-                            productoCarrito.put("descripcion", descripcion);
-                            productoCarrito.put("precio", precio);
-                            productoCarrito.put("imagen", photo);
-                            productoCarrito.put("usuario", userId);
+                            productoCarrito.put("name", nombreProducto);
+                            productoCarrito.put("desc", descripcion);
+                            productoCarrito.put("price", precio);
+                            productoCarrito.put("imgurl", photo);
+                            productoCarrito.put("userP", userId); // Agregar el UID del usuario que subió el producto
 
                             // Agregar el producto a la colección "cart" del usuario
                             firebaseFirestore.collection("user").document(uid).collection("cart")
@@ -175,27 +159,12 @@ public class ProductoDetalle extends AppCompatActivity {
                 });
     }
 
-
-    private void abrirCorreoConNombreVendedor(String nombreVendedor, String correoVendedor) {
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{correoVendedor});
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Consulta sobre producto");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Hola " + nombreVendedor + ", ");
-        emailIntent.setType("message/rfc822");
-
-        try {
-            startActivity(Intent.createChooser(emailIntent, "Enviar correo"));
-        } catch (android.content.ActivityNotFoundException ex) {
-            showToast("No hay aplicaciones de correo instaladas.");
-        }
-    }
-
-
-
-
-
     @Override
     public void onBackPressed() {
+        // Agrega cualquier lógica adicional que desees al presionar el botón de retroceso.
+        // Por ejemplo, puedes realizar alguna acción específica antes de cerrar la actividad.
+
+        // Elimina la llamada a super.onBackPressed() para evitar cerrar la actividad.
         super.onBackPressed();
         Intent intent = new Intent(this, Main.class);
         startActivity(intent);
