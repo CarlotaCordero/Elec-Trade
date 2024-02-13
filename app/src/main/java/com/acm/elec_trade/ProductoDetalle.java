@@ -135,11 +135,13 @@ public class ProductoDetalle extends AppCompatActivity {
         // Tarjetas de Usuario y Producto
         CardView cardUsuario = findViewById(R.id.cardUsuario);
         CardView cardProducto = findViewById(R.id.cardProducto);
+        Button add =findViewById(R.id.addCart);
 
         // Verificar si el usuario actual es el propietario del producto
         if (userId.equals(currentUserUid)) {
             // El usuario actual es el propietario del producto, ocultar tarjeta de Usuario
             cardUsuario.setVisibility(View.GONE);
+            add.setVisibility(View.GONE);
             // Mostrar tarjeta de Producto
             cardProducto.setVisibility(View.VISIBLE);
         } else {
