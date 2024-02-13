@@ -49,8 +49,8 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineDer"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
         app:layout_constraintTop_toBottomOf="@id/nameProduct"
-        android:background="@drawable/borde_buscador"
         android:padding="8dp"/>
+    <!--android:background="@drawable/borde_buscador"-->
 
 
     <LinearLayout
@@ -65,11 +65,14 @@
         <TextView
             android:id="@+id/priceProduct"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
             android:text="priceProduct"
-            android:textColor="@color/Goldfinger"
+            android:gravity="center"
+            android:textColor="@color/Squash"
             android:textSize="24dp"
             android:layout_weight="1"
+            android:background="@drawable/borde_buscador"
             android:textStyle="bold"/>
 
         <Button

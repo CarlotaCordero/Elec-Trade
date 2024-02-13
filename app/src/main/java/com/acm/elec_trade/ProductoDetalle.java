@@ -1,10 +1,14 @@
 package com.acm.elec_trade;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,17 +29,20 @@ public class ProductoDetalle extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
     private String userIdOfProduct;
+    private Button eliminarP;
+    private String nombreProducto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_producto_detalle);
+        topBar();
         // Inicializa FirebaseFirestore
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         // Recupera la información del Intent
         Intent intent = getIntent();
-        String nombreProducto = intent.getStringExtra("idProducto");
+        nombreProducto = intent.getStringExtra("idProducto");
         obtenerDatosDelProducto(nombreProducto);
         obtenerDatosUsuario(nombreProducto);
         verificarSiEnCarrito(nombreProducto);
@@ -67,6 +74,9 @@ public class ProductoDetalle extends AppCompatActivity {
                 abrirCorreoConNombreVendedor(nombreVendedor, correoVendedor);
             }
         });
+
+        //Boton de eliminar producto
+        eliminarP=findViewById(R.id.deleteProduct);
     }
 
     private void obtenerDatosDelProducto(String nombreProducto) {
@@ -160,6 +170,12 @@ public class ProductoDetalle extends AppCompatActivity {
             add.setVisibility(View.GONE);
             // Mostrar tarjeta de Producto
             cardProducto.setVisibility(View.VISIBLE);
+            eliminarP.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mostrarDialogoConfirmacion();
+                }
+            });
         } else {
             // El usuario actual no es el propietario del producto, ocultar tarjeta de Producto
             cardProducto.setVisibility(View.GONE);
@@ -278,5 +294,64 @@ public class ProductoDetalle extends AppCompatActivity {
 
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void topBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Product Detail</font>"));
+        }
+    }
+
+    private void mostrarDialogoConfirmacion() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Eliminar Producto");
+        builder.setMessage("¿Estás seguro de que deseas eliminar este producto?");
+
+        // Agregar botón de confirmación
+        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Lógica para eliminar el producto
+                // Obtén el UID del usuario actual
+                String currentUserUid = firebaseAuth.getCurrentUser().getUid();
+
+                // Realiza una consulta para obtener el documento del producto
+                firebaseFirestore.collection("products")
+                        .whereEqualTo("name", nombreProducto)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    // El documento existe, ahora puedes eliminarlo
+                                    document.getReference().delete()
+                                            .addOnSuccessListener(aVoid -> {
+                                                showToast("Producto eliminado con éxito");
+                                                // Redirigir o realizar alguna acción adicional después de eliminar
+                                                Intent intent = new Intent(ProductoDetalle.this, Main.class);
+                                                startActivity(intent);
+                                                finish();  // Cierra la actividad actual
+                                            })
+                                            .addOnFailureListener(e -> showToast("Error al eliminar producto: " + e.getMessage()));
+                                }
+                            } else {
+                                // Error al realizar la consulta
+                                showToast("Error al obtener datos del producto: " + task.getException().getMessage());
+                            }
+                        });
+            }
+        });
+
+        // Agregar botón de cancelación
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Cerrar el diálogo sin hacer nada
+                dialog.dismiss();
+            }
+        });
+
+        // Mostrar el diálogo
+        builder.create().show();
     }
 }
