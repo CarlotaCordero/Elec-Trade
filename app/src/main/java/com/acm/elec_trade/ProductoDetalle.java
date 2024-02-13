@@ -48,6 +48,22 @@ public class ProductoDetalle extends AppCompatActivity {
                 aniadirAlCarrito(uid, nombreProducto);
             }
         });
+
+        // Botón de contacto con el usuario
+        Button contactUser = findViewById(R.id.contactUser);
+        contactUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Obtener el nombre y el correo del vendedor
+                TextView userNameTextView = findViewById(R.id.userName);
+                String nombreVendedor = userNameTextView.getText().toString();
+                TextView userEmailTextView = findViewById(R.id.userMail);
+                String correoVendedor = userEmailTextView.getText().toString();
+
+                // Abrir el correo con el nombre del vendedor ya escrito
+                abrirCorreoConNombreVendedor(nombreVendedor, correoVendedor);
+            }
+        });
     }
 
     private void obtenerDatosDelProducto(String nombreProducto) {
@@ -159,6 +175,21 @@ public class ProductoDetalle extends AppCompatActivity {
                 });
     }
 
+
+
+    private void abrirCorreoConNombreVendedor(String nombreVendedor, String correoVendedor) {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{correoVendedor});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Consulta sobre producto");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Hola " + nombreVendedor + ", ");
+        emailIntent.setType("message/rfc822");
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Enviar correo"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            showToast("No hay aplicaciones de correo instaladas.");
+        }
+    }
     @Override
     public void onBackPressed() {
         // Agrega cualquier lógica adicional que desees al presionar el botón de retroceso.
