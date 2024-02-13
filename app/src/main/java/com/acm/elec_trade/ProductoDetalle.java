@@ -1,6 +1,7 @@
 package com.acm.elec_trade;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ public class ProductoDetalle extends AppCompatActivity {
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
+    private String userIdOfProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class ProductoDetalle extends AppCompatActivity {
         String nombreProducto = intent.getStringExtra("idProducto");
         obtenerDatosDelProducto(nombreProducto);
         obtenerDatosUsuario(nombreProducto);
+        verificarSiEnCarrito(nombreProducto);
         TextView nProd = findViewById(R.id.nameProduct);
         nProd.setText(nombreProducto);
         //Boton para añadir al carrito
@@ -98,6 +101,7 @@ public class ProductoDetalle extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             // El documento existe, ahora puedes obtener más datos
                             String userId = document.getString("userP");
+                            verificarPropietarioDelProducto(userId);
                             firebaseFirestore.collection("user")
                                     .whereEqualTo("id", userId)
                                     .get().addOnCompleteListener(task1 -> {
@@ -140,6 +144,58 @@ public class ProductoDetalle extends AppCompatActivity {
         Glide.with(this).load(photo).centerCrop().into(imagenImageView);
     }
 
+    private void verificarPropietarioDelProducto(String userId) {
+        // Obtén el UID del usuario actual
+        String currentUserUid = firebaseAuth.getCurrentUser().getUid();
+
+        // Tarjetas de Usuario y Producto
+        CardView cardUsuario = findViewById(R.id.cardUsuario);
+        CardView cardProducto = findViewById(R.id.cardProducto);
+        Button add =findViewById(R.id.addCart);
+
+        // Verificar si el usuario actual es el propietario del producto
+        if (userId.equals(currentUserUid)) {
+            // El usuario actual es el propietario del producto, ocultar tarjeta de Usuario
+            cardUsuario.setVisibility(View.GONE);
+            add.setVisibility(View.GONE);
+            // Mostrar tarjeta de Producto
+            cardProducto.setVisibility(View.VISIBLE);
+        } else {
+            // El usuario actual no es el propietario del producto, ocultar tarjeta de Producto
+            cardProducto.setVisibility(View.GONE);
+            // Mostrar tarjeta de Usuario
+            cardUsuario.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    private void verificarSiEnCarrito(String nombreProducto) {
+        // Obtén el UID del usuario actual
+        String currentUserUid = firebaseAuth.getCurrentUser().getUid();
+
+        // Realiza una consulta para verificar si el producto ya está en el carrito del usuario
+        firebaseFirestore.collection("user").document(currentUserUid).collection("cart")
+                .whereEqualTo("name", nombreProducto)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Button cartButton = findViewById(R.id.addCart);
+                        // Verificar si hay algún documento en la consulta (producto en el carrito)
+                        if (!task.getResult().isEmpty()) {
+                            // El producto ya está en el carrito, cambiar el texto del botón y establecer un listener para eliminarlo
+                            cartButton.setText("Remove from Cart");
+                            cartButton.setOnClickListener(v -> eliminarDelCarrito(currentUserUid, nombreProducto));
+                        } else {
+                            // El producto no está en el carrito, mantener el comportamiento original del botón
+                            cartButton.setOnClickListener(v -> aniadirAlCarrito(currentUserUid, nombreProducto));
+                        }
+                    } else {
+                        // Error al realizar la consulta
+                        showToast("Error al verificar el carrito: " + task.getException().getMessage());
+                    }
+                });
+    }
+
     private void aniadirAlCarrito(String uid, String nombreProducto) {
         // Obtener el producto completo de la colección "products"
         firebaseFirestore.collection("products")
@@ -175,8 +231,26 @@ public class ProductoDetalle extends AppCompatActivity {
                 });
     }
 
-
-
+    private void eliminarDelCarrito(String uid, String nombreProducto) {
+        // Realiza una consulta para obtener el documento del producto en el carrito
+        firebaseFirestore.collection("user").document(uid).collection("cart")
+                .whereEqualTo("name", nombreProducto)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // El documento existe, ahora puedes eliminarlo
+                            document.getReference().delete()
+                                    .addOnSuccessListener(aVoid -> showToast("Producto eliminado del carrito"))
+                                    .addOnFailureListener(e -> showToast("Error al eliminar producto del carrito: " + e.getMessage()));
+                        }
+                    } else {
+                        // Error al realizar la consulta
+                        showToast("Error al obtener datos del producto en el carrito: " + task.getException().getMessage());
+                    }
+                });
+    }
+  
     private void abrirCorreoConNombreVendedor(String nombreVendedor, String correoVendedor) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{correoVendedor});
@@ -190,6 +264,7 @@ public class ProductoDetalle extends AppCompatActivity {
             showToast("No hay aplicaciones de correo instaladas.");
         }
     }
+
     @Override
     public void onBackPressed() {
         // Agrega cualquier lógica adicional que desees al presionar el botón de retroceso.
