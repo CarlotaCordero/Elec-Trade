@@ -1,18 +1,23 @@
 package com.acm.elec_trade.Fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.acm.elec_trade.Adapter.ProductAdapterFB;
 import com.acm.elec_trade.Adapter.ProductFB;
@@ -20,10 +25,14 @@ import com.acm.elec_trade.AniadirProducto;
 import com.acm.elec_trade.ProductoDetalle;
 import com.acm.elec_trade.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -102,15 +111,97 @@ public class Cart_fragment extends Fragment {
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 // Obtén el modelo de producto correspondiente al documento
                 ProductFB clickedProduct = documentSnapshot.toObject(ProductFB.class);
+                //Verificar existencia del producto
+                verificarExistenciaProducto(clickedProduct);
                 // Implementa la lógica para abrir el nuevo Activity aquí
-                Intent intent = new Intent(getContext(), ProductoDetalle.class);
+                /*Intent intent = new Intent(getContext(), ProductoDetalle.class);
                 intent.putExtra("idProducto", clickedProduct.getName());
                 // Puedes usar Intent para iniciar un nuevo Activity, pasando la información necesaria
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
         recyclerViewCart.setAdapter(mProductAdapterFB);
         return rootView;
+    }
+
+    private void verificarExistenciaProducto(ProductFB product) {
+        FirebaseFirestore.getInstance().collection("productos")
+                .document(product.getName())  // Ajusta esta línea según la estructura de tu clase ProductFB
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // Implementa la lógica para abrir el nuevo Activity aquí
+                            Intent intent = new Intent(getContext(), ProductoDetalle.class);
+                            intent.putExtra("idProducto", product.getName());
+                            // Puedes usar Intent para iniciar un nuevo Activity, pasando la información necesaria
+                            startActivity(intent);
+                        } else {
+                            eliminarProductoDelCarrito(product.getName());  // Ajusta esta línea según la estructura de tu clase ProductFB
+                        }
+                    } else {
+                        Log.d("ExistenciaProducto", "Error al verificar la existencia del producto: ", task.getException());
+                    }
+                });
+    }
+
+    private void eliminarProductoDelCarrito(String productId) {
+        String uid = firebaseAuth.getCurrentUser().getUid();
+        firebaseFirestore.collection("user").document(uid).collection("cart").document(productId)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        eliminarDelCarrito(uid, productId);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("EliminarProducto", "Error al eliminar el producto del carrito", e);
+                        Toast.makeText(getContext(), "Error al eliminar el producto del carrito", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void eliminarDelCarrito(String uid, String nombreProducto) {
+        // Realiza una consulta para obtener el documento del producto en el carrito
+        firebaseFirestore.collection("user").document(uid).collection("cart")
+                .whereEqualTo("name", nombreProducto)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // El documento existe, ahora puedes eliminarlo
+                            document.getReference().delete()
+                                    .addOnSuccessListener(aVoid -> showConfirmationDialog(nombreProducto))
+                                    .addOnFailureListener(e -> showToast("Error al eliminar producto del carrito: " + e.getMessage()));
+                        }
+                    } else {
+                        // Error al realizar la consulta
+                        showToast("Error al obtener datos del producto en el carrito: " + task.getException().getMessage());
+                    }
+                });
+    }
+
+    private void showConfirmationDialog(String nombreProducto) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle("Producto eliminado");
+        builder.setMessage(nombreProducto);
+        builder.setCancelable(true);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     //Revisar
