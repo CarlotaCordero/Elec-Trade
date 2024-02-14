@@ -25,6 +25,11 @@
             android:parentActivityName=".Main"
             android:theme="@style/Theme.Elec_Trade"/>
         <activity
+            android:name=".Edit_product"
+            android:exported="false"
+            android:parentActivityName=".Main"
+            android:theme="@style/Theme.Elec_Trade" />
+        <activity
             android:name=".ProductoDetalle"
             android:exported="true"
             android:parentActivityName=".Main"

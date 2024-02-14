@@ -29,7 +29,7 @@ public class ProductoDetalle extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private FirebaseAuth firebaseAuth;
     private String userIdOfProduct;
-    private Button eliminarP;
+    private Button eliminarP, editarP;
     private String nombreProducto;
 
     @Override
@@ -75,8 +75,9 @@ public class ProductoDetalle extends AppCompatActivity {
             }
         });
 
-        //Boton de eliminar producto
+        //Boton de eliminar y modificar producto
         eliminarP=findViewById(R.id.deleteProduct);
+        editarP=findViewById(R.id.editProduct);
     }
 
     private void obtenerDatosDelProducto(String nombreProducto) {
@@ -174,6 +175,14 @@ public class ProductoDetalle extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     mostrarDialogoConfirmacion();
+                }
+            });
+            editarP.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent editProduct = new Intent(ProductoDetalle.this, Edit_product.class);
+                    editProduct.putExtra("nomProduc", nombreProducto);
+                    startActivity(editProduct);
                 }
             });
         } else {
