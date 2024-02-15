@@ -38,7 +38,7 @@
                 style="@style/interior_caja"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Producto: "
+                android:hint="@string/product"
                 android:maxLength="40"
                 android:inputType="text"
                 android:textColor="@color/black" />
@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="top"
-                android:hint="Descripcion: "
+                android:hint="@string/description"
                 android:inputType="textMultiLine"
                 android:maxLines="4"
                 android:minLines="4"
@@ -82,7 +82,7 @@
                 style="@style/interior_caja"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Precio: "
+                android:hint="@string/price"
                 android:inputType="number"
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Imagen:"
+                android:text="@string/img"
                 android:textColor="@color/black" />
 
             <Button
@@ -106,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Subir archivo"
+                android:text="@string/subirPhoto"
                 android:textColor="@color/Goldfinger" />
 
         </LinearLayout>
@@ -132,7 +132,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:text="ADD Product"
+        android:text="@string/addProduct"
         android:layout_marginBottom="32dp"
         android:textColor="@color/Goldfinger"
         app:layout_constraintBottom_toBottomOf="parent"

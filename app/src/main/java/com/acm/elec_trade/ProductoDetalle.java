@@ -299,17 +299,18 @@ public class ProductoDetalle extends AppCompatActivity {
     private void topBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Product Detail</font>"));
+            String titulo = getResources().getString(R.string.productDetail);
+            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">"+titulo+"</font>"));
         }
     }
 
     private void mostrarDialogoConfirmacion() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Eliminar Producto");
-        builder.setMessage("¿Estás seguro de que deseas eliminar este producto?");
+        builder.setTitle(R.string.deleteProd);
+        builder.setMessage(R.string.deleteProdStr);
 
         // Agregar botón de confirmación
-        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Lógica para eliminar el producto
@@ -343,7 +344,7 @@ public class ProductoDetalle extends AppCompatActivity {
         });
 
         // Agregar botón de cancelación
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Cerrar el diálogo sin hacer nada

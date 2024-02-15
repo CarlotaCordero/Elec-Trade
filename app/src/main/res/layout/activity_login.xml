@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/interior_caja"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/interior_caja"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,7 +67,7 @@
         android:id="@+id/login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="LogIn"
+        android:text="@string/login"
         style="@style/boton_oscuro"
         app:layout_constraintEnd_toStartOf="@+id/guidelineDer"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
@@ -77,7 +77,7 @@
         android:id="@+id/texto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DON'T HAVE AN ACCOUNT?"
+        android:text="@string/noAccount"
         app:layout_constraintBottom_toTopOf="@+id/register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +89,7 @@
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="Sign Up"
+        android:text="@string/signUp"
         style="@style/boton_claro"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

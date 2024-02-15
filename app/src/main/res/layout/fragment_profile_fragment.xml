@@ -59,14 +59,14 @@
                         android:id="@+id/editData"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Edit"
+                        android:text="@string/edit"
                         android:layout_marginLeft="16dp"/>
 
                     <Button
                         android:id="@+id/logout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Log out"
+                        android:text="@string/logOut"
                         android:layout_marginLeft="16dp"/>
 
                 </LinearLayout>

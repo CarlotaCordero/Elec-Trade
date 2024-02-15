@@ -162,7 +162,8 @@ public class AniadirProducto extends AppCompatActivity {
     private void topBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Añadir Producto</font>"));
+            String titulo = getResources().getString(R.string.addProduct);
+            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">"+titulo+"</font>"));
         }
     }
 }
