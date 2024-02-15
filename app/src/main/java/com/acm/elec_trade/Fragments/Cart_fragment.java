@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.acm.elec_trade.Adapter.ProductAdapterFB;
 import com.acm.elec_trade.Adapter.ProductFB;
 import com.acm.elec_trade.AniadirProducto;
+import com.acm.elec_trade.Main;
 import com.acm.elec_trade.ProductoDetalle;
 import com.acm.elec_trade.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -125,76 +126,70 @@ public class Cart_fragment extends Fragment {
     }
 
     private void verificarExistenciaProducto(ProductFB product) {
-        FirebaseFirestore.getInstance().collection("productos")
-                .document(product.getName())  // Ajusta esta línea según la estructura de tu clase ProductFB
+        FirebaseFirestore.getInstance().collection("products")
+                .whereEqualTo("name", product.getName())
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            // Implementa la lógica para abrir el nuevo Activity aquí
-                            Intent intent = new Intent(getContext(), ProductoDetalle.class);
-                            intent.putExtra("idProducto", product.getName());
-                            // Puedes usar Intent para iniciar un nuevo Activity, pasando la información necesaria
-                            startActivity(intent);
-                        } else {
-                            eliminarProductoDelCarrito(product.getName());  // Ajusta esta línea según la estructura de tu clase ProductFB
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // El documento existe, abrir la actividad ProductoDetalle
+                            abrirProductoDetalle(product.getName()); // Utilizo document.getId() como identificador único del documento
                         }
                     } else {
-                        Log.d("ExistenciaProducto", "Error al verificar la existencia del producto: ", task.getException());
+                        // Error al realizar la consulta
+                        Log.e("ExistenciaProducto", "Error al obtener datos del producto: " + task.getException());
                     }
                 });
+    }
+
+    private void abrirProductoDetalle(String productId) {
+        Intent intent = new Intent(getContext(), ProductoDetalle.class);
+        intent.putExtra("idProducto", productId);
+        startActivity(intent);
     }
 
     private void eliminarProductoDelCarrito(String productId) {
         String uid = firebaseAuth.getCurrentUser().getUid();
+
+        // Referencia al documento del producto en el carrito del usuario
         firebaseFirestore.collection("user").document(uid).collection("cart").document(productId)
                 .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        eliminarDelCarrito(uid, productId);
-                    }
+                .addOnSuccessListener(aVoid -> {
+                    eliminarDelCarrito(uid, productId);
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("EliminarProducto", "Error al eliminar el producto del carrito", e);
-                        Toast.makeText(getContext(), "Error al eliminar el producto del carrito", Toast.LENGTH_SHORT).show();
-                    }
+                .addOnFailureListener(e -> {
+                    Log.e("EliminarProducto", "Error al eliminar el producto del carrito", e);
+                    showToast("Error al eliminar el producto del carrito");
                 });
     }
 
-    private void eliminarDelCarrito(String uid, String nombreProducto) {
+    private void eliminarDelCarrito(String uid, String productId) {
         // Realiza una consulta para obtener el documento del producto en el carrito
         firebaseFirestore.collection("user").document(uid).collection("cart")
-                .whereEqualTo("name", nombreProducto)
+                .whereEqualTo("name", productId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             // El documento existe, ahora puedes eliminarlo
                             document.getReference().delete()
-                                    .addOnSuccessListener(aVoid -> showConfirmationDialog(nombreProducto))
-                                    .addOnFailureListener(e -> showToast("Error al eliminar producto del carrito: " + e.getMessage()));
+                                    .addOnSuccessListener(aVoid -> showConfirmationDialog(productId))
+                                    .addOnFailureListener(e -> showToast("Error al eliminar producto del carrito"));
                         }
                     } else {
                         // Error al realizar la consulta
-                        showToast("Error al obtener datos del producto en el carrito: " + task.getException().getMessage());
+                        showToast("Error al obtener datos del producto en el carrito");
                     }
                 });
     }
 
-    private void showConfirmationDialog(String nombreProducto) {
+    private void showConfirmationDialog(String productId) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setTitle("Producto eliminado");
-        builder.setMessage(nombreProducto);
+        builder.setMessage(productId);
         builder.setCancelable(true);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            // Puedes realizar alguna acción después de hacer clic en OK, si es necesario
         });
         AlertDialog dialog = builder.create();
         dialog.show();

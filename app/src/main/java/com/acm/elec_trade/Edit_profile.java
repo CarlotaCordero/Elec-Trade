@@ -215,12 +215,13 @@ public class Edit_profile extends AppCompatActivity {
     private void topBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Edit Profile</font>"));
+            String titulo = getResources().getString(R.string.editProfile);
+            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">"+titulo+"</font>"));
 
             // Agrega un botón de eliminación de cuenta a la barra de acciones
             actionBar.setDisplayOptions(actionBar.getDisplayOptions() | ActionBar.DISPLAY_SHOW_CUSTOM);
             TextView deleteAccountButton = new TextView(actionBar.getThemedContext());
-            deleteAccountButton.setText("DELETE");
+            deleteAccountButton.setText(R.string.delete);
             deleteAccountButton.setTextColor(Color.parseColor("#F2EFE9"));
             deleteAccountButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16); // Cambia el tamaño del texto según sea necesario
             ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
@@ -243,10 +244,10 @@ public class Edit_profile extends AppCompatActivity {
 
     private void showDeleteAccountDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Delete Account");
-        builder.setMessage("Are you sure you want to delete your account? This action cannot be undone.");
+        builder.setTitle(R.string.deleteAccount);
+        builder.setMessage(R.string.deleteAccountStr);
 
-        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Usuario ha confirmado la eliminación, proceder con la eliminación de la cuenta
@@ -254,7 +255,7 @@ public class Edit_profile extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Usuario ha cancelado la eliminación, cerrar el diálogo
