@@ -44,6 +44,7 @@
         android:layout_height="150dp"
         android:layout_marginTop="8dp"
         android:text="descriptionProduct"
+        android:maxLines="4"
         android:textColor="@color/black"
         android:textSize="16dp"
         app:layout_constraintEnd_toStartOf="@+id/guidelineDer"

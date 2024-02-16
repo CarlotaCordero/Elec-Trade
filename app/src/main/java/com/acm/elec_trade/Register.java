@@ -137,12 +137,26 @@ public class Register extends AppCompatActivity {
     }
 
     private void createCartCollection(String userId) {
-        // Crear la colección "cart" dentro de cada usuario
-        Map<String, Object> cartMap = new HashMap<>();
+        // Verificar si la colección "cart" ya existe para el usuario
         firestore.collection("user").document(userId).collection("cart")
-                .add(cartMap)
-                .addOnSuccessListener(documentReference -> {
-                    // La colección "cart" se creó con éxito
+                .document("dummyDocument")  // Utiliza un documento ficticio para verificar la existencia
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (!task.getResult().exists()) {
+                            // La colección "cart" no existe, créela cuando el usuario agregue un producto al carrito
+                            firestore.collection("user").document(userId).collection("cart")
+                                    .document("dummyDocument")  // Utiliza el mismo documento ficticio
+                                    .delete()  // Elimina el documento ficticio creado para la verificación
+                                    .addOnSuccessListener(aVoid -> {
+                                        // La colección "cart" ahora está creada sin documentos
+                                    });
+                        } else {
+                            // La colección "cart" ya existe
+                        }
+                    } else {
+                        // Manejar el error al verificar la existencia de la colección
+                    }
                 });
     }
 
