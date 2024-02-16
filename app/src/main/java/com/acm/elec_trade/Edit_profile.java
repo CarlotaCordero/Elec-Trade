@@ -98,7 +98,7 @@ public class Edit_profile extends AppCompatActivity {
                                 } else {
                                     // Si no hay foto de perfil, muestra la imagen predeterminada
                                     Glide.with(this)
-                                            .load(R.drawable.user_icon)
+                                            .load(R.drawable.robot)
                                             .circleCrop()
                                             .into(fotoPerfil);
                                 }
