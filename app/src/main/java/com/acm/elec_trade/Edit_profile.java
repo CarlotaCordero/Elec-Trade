@@ -138,7 +138,7 @@ public class Edit_profile extends AppCompatActivity {
                             updateUserNameAndPhoto(currentUser.getUid(), nuevoNombre, null);
                         }
                     } else {
-                        Toast.makeText(Edit_profile.this, "Ingrese un nuevo nombre o seleccione una imagen", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Edit_profile.this, R.string.modData, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -186,7 +186,7 @@ public class Edit_profile extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Edit_profile.this, "Error al subir la imagen", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Edit_profile.this, "Error "+R.string.subirPhoto, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -205,10 +205,10 @@ public class Edit_profile extends AppCompatActivity {
         // Actualiza los datos en Firestore
         userRef.update(updates)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(Edit_profile.this, "Cambios guardados con éxito", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Edit_profile.this, R.string.editProfile, Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(Edit_profile.this, "Error al guardar los cambios", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Edit_profile.this, "Error", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -284,11 +284,11 @@ public class Edit_profile extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             // La cuenta ha sido eliminada exitosamente
-                            Toast.makeText(Edit_profile.this, "Cuenta eliminada con éxito", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Edit_profile.this, R.string.deleteAccount, Toast.LENGTH_SHORT).show();
                             openLoginActivity(); // Redirige a la pantalla de inicio de sesión u otra actividad según sea necesario
                         } else {
                             // Error al eliminar la cuenta
-                            Toast.makeText(Edit_profile.this, "Error al eliminar la cuenta", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Edit_profile.this, "Error", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -306,7 +306,7 @@ public class Edit_profile extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     // Error al eliminar el documento en Firestore
-                    Toast.makeText(Edit_profile.this, "Error al eliminar la información en Firestore", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Edit_profile.this, "Error", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -325,7 +325,7 @@ public class Edit_profile extends AppCompatActivity {
                         }
                     } else {
                         // Error al obtener los productos del usuario
-                        Toast.makeText(Edit_profile.this, "Error al obtener los productos del usuario", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Edit_profile.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

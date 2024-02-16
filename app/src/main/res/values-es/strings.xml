@@ -35,4 +35,17 @@
     <string name="deleteProdStr">¿Estás seguro de que deseas eliminar este producto?</string>
     <string name="cancel">Cancelar</string>
     <string name="deleteCart">Borrar del carrito</string>
+    <string name="prodDelete">El producto ha sido eliminado</string>
+    <string name="ingData">Ingrese los datos</string>
+    <string name="descError">Descripción muy larga</string>
+    <string name="campoVacio">Campo vacío</string>
+    <string name="revisar">Revisar</string>
+    <string name="contNoCoincide">Las contraseñas no coinciden</string>
+    <string name="min6char">Mínimo 6 caracteres</string>
+    <string name="userRegistred">Usuario registrado con exito</string>
+    <string name="modData">Cambie el nombre o la foto</string>
+    <string name="envCorreo">Enviar correo</string>
+    <string name="noMailApp">No hay aplicaciones de correo instaladas</string>
+    <string name="consProd">Consulta sobre producto</string>
+    <string name="hello">Hola,</string>
 </resources>

@@ -46,7 +46,8 @@ public class Register extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             // Configura el color del título, por ejemplo
-            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Register</font>"));
+            String titulo = getResources().getString(R.string.signUp);
+            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">"+titulo+"</font>"));
         }
 
         su.setOnClickListener(new View.OnClickListener() {
@@ -59,22 +60,22 @@ public class Register extends AppCompatActivity {
                 setError();
                 if (uName.isEmpty() || uEmail.isEmpty() || uPass.isEmpty() || uPassRep.isEmpty()) {
                     if(uName.isEmpty())
-                        userName.setError("Campo vacío");
+                        userName.setError(getResources().getString(R.string.campoVacio));
                     if(uEmail.isEmpty())
-                        userEmail.setError("Campo vacío");
+                        userEmail.setError(getResources().getString(R.string.campoVacio));
                     if(uPass.isEmpty())
-                        userPass.setError("Campo vacío");
+                        userPass.setError(getResources().getString(R.string.campoVacio));
                     if(uPassRep.isEmpty())
-                        userPassRep.setError("Campo vacío");
+                        userPassRep.setError(getResources().getString(R.string.campoVacio));
                 } else if (uPass.equals(uPassRep) && uPass.length() >= 6 && uPassRep.length() >= 6) {
                     registerUser(uName, uEmail, uPass);
                 } else {
                     if (uPass.length() >= 6 && uPassRep.length() >= 6) {
-                        userPassRep.setError("Revisar");
-                        showToast("Lac contraseñas no coinciden");
+                        userPassRep.setError(getResources().getString(R.string.revisar));
+                        showToast(getResources().getString(R.string.contNoCoincide));
                     } else {
-                        userPass.setError("Mínimo 6 caracteres");
-                        userPassRep.setError("Mínimo 6 caracteres");
+                        userPass.setError(getResources().getString(R.string.min6char));
+                        userPassRep.setError(getResources().getString(R.string.min6char));
                     }
                 }
             }
@@ -98,7 +99,7 @@ public class Register extends AppCompatActivity {
                     //Never enters onComplete function or onFailure
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        showToast("Usuario registrado con éxito");
+                        showToast(getResources().getString(R.string.userRegistred));
                         toMainPage();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -142,9 +143,7 @@ public class Register extends AppCompatActivity {
                 .add(cartMap)
                 .addOnSuccessListener(documentReference -> {
                     // La colección "cart" se creó con éxito
-                    showToast("Colección 'cart' creada para el usuario");
-                })
-                .addOnFailureListener(e -> showToast("Error al crear la colección 'cart': " + e.getMessage()));
+                });
     }
 
 }

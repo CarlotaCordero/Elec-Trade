@@ -35,4 +35,17 @@
     <string name="deleteProdStr">Are you sure you want to remove this product?</string>
     <string name="cancel">Cancel</string>
     <string name="deleteCart">Delete from cart</string>
+    <string name="prodDelete">The product has been deleted</string>
+    <string name="ingData">Enter the data</string>
+    <string name="descError">Description to long</string>
+    <string name="campoVacio">Empty field</string>
+    <string name="revisar">Review</string>
+    <string name="contNoCoincide">Passwords do not match</string>
+    <string name="min6char">Min 6 characters</string>
+    <string name="userRegistred">User successfully registered</string>
+    <string name="modData">Change the Username or photo</string>
+    <string name="envCorreo">Send email</string>
+    <string name="noMailApp">There is no email application installed</string>
+    <string name="consProd">Product inquiry</string>
+    <string name="hello">Hello,</string>
 </resources>
