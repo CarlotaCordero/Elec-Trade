@@ -271,7 +271,7 @@ public class ProductoDetalle extends AppCompatActivity {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{correoVendedor});
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.consProd);
-        emailIntent.putExtra(Intent.EXTRA_TEXT, R.string.hello + nombreVendedor + ", ");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.hello)+" "+ nombreVendedor + ", ");
         emailIntent.setType("message/rfc822");
 
         try {
