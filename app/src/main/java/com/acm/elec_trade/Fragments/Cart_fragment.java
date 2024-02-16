@@ -185,7 +185,7 @@ public class Cart_fragment extends Fragment {
 
     private void showConfirmationDialog(String productId) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-        builder.setTitle("Producto eliminado");
+        builder.setTitle(R.string.prodDelete);
         builder.setMessage(productId);
         builder.setCancelable(true);
         builder.setPositiveButton("OK", (dialog, which) -> {
