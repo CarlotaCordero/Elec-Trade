@@ -94,7 +94,7 @@ public class Register extends AppCompatActivity {
                 map.put("id", id);
                 map.put("name", uName);
                 map.put("email", uEmail);
-                map.put("password", uPass);
+                /*map.put("password", uPass);*/
                 firestore.collection("user").document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     //Never enters onComplete function or onFailure
                     @Override
