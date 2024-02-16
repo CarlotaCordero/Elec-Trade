@@ -60,20 +60,47 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/edit"
-                        android:layout_marginLeft="16dp"/>
+                        android:layout_marginLeft="16dp"
+                        style="@style/boton_oscuro"/>
 
                     <Button
                         android:id="@+id/logout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/logOut"
-                        android:layout_marginLeft="16dp"/>
+                        android:layout_marginLeft="16dp"
+                        style="@style/boton_oscuro"/>
 
                 </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/texttext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/datos"
+            android:text="@string/yourProduct"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            android:textColor="@color/Goldfinger"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/separador"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/texttext"
+            android:background="@color/Goldfinger"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/reciclerProfile"
@@ -82,7 +109,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/datos"
+            app:layout_constraintTop_toBottomOf="@+id/separador"
             android:layout_marginTop="8dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

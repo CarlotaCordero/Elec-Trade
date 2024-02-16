@@ -25,7 +25,8 @@
             android:background="@drawable/borde_buscador"
             android:hint="Buscar..."
             app:iconifiedByDefault="false"
-            app:searchIcon="@drawable/search_ic" />
+            app:searchIcon="@drawable/search_ic"
+            app:closeIcon="@drawable/cross_ic"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

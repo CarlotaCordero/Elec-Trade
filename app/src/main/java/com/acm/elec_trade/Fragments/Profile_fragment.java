@@ -115,7 +115,7 @@ public class Profile_fragment extends Fragment {
                         } else {
                             // Si no hay foto de perfil, muestra la imagen predeterminada
                             Glide.with(requireContext())
-                                    .load(R.drawable.user_icon)
+                                    .load(R.drawable.robot)
                                     .circleCrop()
                                     .into(profilePic);
                         }

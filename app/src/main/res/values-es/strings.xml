@@ -48,4 +48,5 @@
     <string name="noMailApp">No hay aplicaciones de correo instaladas</string>
     <string name="consProd">Consulta sobre producto</string>
     <string name="hello">Hola,</string>
+    <string name="yourProduct">Tus productos</string>
 </resources>

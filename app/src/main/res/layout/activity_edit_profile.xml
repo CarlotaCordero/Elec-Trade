@@ -90,7 +90,8 @@
         app:layout_constraintEnd_toEndOf="@id/guidelineDer"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="@id/guidelineIzq"
-        app:layout_constraintTop_toBottomOf="@+id/profilePick" />
+        app:layout_constraintTop_toBottomOf="@+id/profilePick"
+        style="@style/boton_oscuro"/>
 
     <TextView
         android:id="@+id/nameUser"

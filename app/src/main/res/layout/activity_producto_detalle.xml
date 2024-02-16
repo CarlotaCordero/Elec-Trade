@@ -80,7 +80,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/addCart"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            style="@style/boton_oscuro"/>
 
     </LinearLayout>
 
@@ -136,7 +137,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
                 android:layout_weight="2"
-                android:text="@string/contact" />
+                android:text="@string/contact"
+                style="@style/boton_oscuro"/>
 
         </LinearLayout>
 
@@ -167,7 +169,8 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginLeft="16dp"
                 android:layout_weight="2"
-                android:text="@string/edit" />
+                android:text="@string/edit"
+                style="@style/boton_oscuro"/>
 
             <Button
                 android:id="@+id/deleteProduct"
@@ -175,7 +178,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
                 android:layout_weight="2"
-                android:text="@string/delete" />
+                android:text="@string/delete"
+                style="@style/boton_oscuro"/>
 
         </LinearLayout>
 
