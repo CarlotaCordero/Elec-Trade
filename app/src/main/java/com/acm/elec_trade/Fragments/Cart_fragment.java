@@ -122,6 +122,7 @@ public class Cart_fragment extends Fragment {
             }
         });
         recyclerViewCart.setAdapter(mProductAdapterFB);
+        checkIfCartIsEmpty(rootView);
         return rootView;
     }
 
@@ -193,6 +194,30 @@ public class Cart_fragment extends Fragment {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void checkIfCartIsEmpty(View rootView) {
+        String uid = firebaseAuth.getCurrentUser().getUid();
+
+        // Consulta los productos en el carrito del usuario actual
+        firebaseFirestore.collection("user").document(uid).collection("cart")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().isEmpty()) {
+                            // El carrito está vacío, muestra el ImageView
+                            Toast.makeText(getContext(), "Vacio", Toast.LENGTH_SHORT).show();
+                            rootView.findViewById(R.id.imageEmptyCart).setVisibility(View.VISIBLE);
+                        } else {
+                            // El carrito no está vacío, oculta el ImageView y muestra el RecyclerView
+                            rootView.findViewById(R.id.imageEmptyCart).setVisibility(View.INVISIBLE);
+                            Toast.makeText(getContext(), "Lleno", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        // Manejar el error al verificar la existencia de productos en el carrito
+                        Toast.makeText(getContext(), "Error al obtener datos del carrito", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void showToast(String message) {
