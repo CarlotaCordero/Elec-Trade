@@ -69,10 +69,10 @@ public class AniadirProducto extends AppCompatActivity {
                 String pProd = prec.getText().toString().trim();
 
                 if (nProd.isEmpty() || dProd.isEmpty() || pProd.isEmpty()) {
-                    Toast.makeText(AniadirProducto.this, "Ingrese los datos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AniadirProducto.this, R.string.ingData, Toast.LENGTH_SHORT).show();
                 } else {
                     if (dProd.length() > 400) {
-                        Toast.makeText(AniadirProducto.this, "La descripción no puede superar los 400 caracteres", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AniadirProducto.this, R.string.descError, Toast.LENGTH_SHORT).show();
                     } else {
                         postProd(nProd, dProd, pProd, uid);
                     }
@@ -162,7 +162,8 @@ public class AniadirProducto extends AppCompatActivity {
     private void topBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Añadir Producto</font>"));
+            String titulo = getResources().getString(R.string.addProduct);
+            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">"+titulo+"</font>"));
         }
     }
 }

@@ -46,7 +46,8 @@ public class Register extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             // Configura el color del título, por ejemplo
-            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Register</font>"));
+            String titulo = getResources().getString(R.string.signUp);
+            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">"+titulo+"</font>"));
         }
 
         su.setOnClickListener(new View.OnClickListener() {
@@ -59,22 +60,22 @@ public class Register extends AppCompatActivity {
                 setError();
                 if (uName.isEmpty() || uEmail.isEmpty() || uPass.isEmpty() || uPassRep.isEmpty()) {
                     if(uName.isEmpty())
-                        userName.setError("Campo vacío");
+                        userName.setError(getResources().getString(R.string.campoVacio));
                     if(uEmail.isEmpty())
-                        userEmail.setError("Campo vacío");
+                        userEmail.setError(getResources().getString(R.string.campoVacio));
                     if(uPass.isEmpty())
-                        userPass.setError("Campo vacío");
+                        userPass.setError(getResources().getString(R.string.campoVacio));
                     if(uPassRep.isEmpty())
-                        userPassRep.setError("Campo vacío");
+                        userPassRep.setError(getResources().getString(R.string.campoVacio));
                 } else if (uPass.equals(uPassRep) && uPass.length() >= 6 && uPassRep.length() >= 6) {
                     registerUser(uName, uEmail, uPass);
                 } else {
                     if (uPass.length() >= 6 && uPassRep.length() >= 6) {
-                        userPassRep.setError("Revisar");
-                        showToast("Lac contraseñas no coinciden");
+                        userPassRep.setError(getResources().getString(R.string.revisar));
+                        showToast(getResources().getString(R.string.contNoCoincide));
                     } else {
-                        userPass.setError("Mínimo 6 caracteres");
-                        userPassRep.setError("Mínimo 6 caracteres");
+                        userPass.setError(getResources().getString(R.string.min6char));
+                        userPassRep.setError(getResources().getString(R.string.min6char));
                     }
                 }
             }
@@ -93,12 +94,12 @@ public class Register extends AppCompatActivity {
                 map.put("id", id);
                 map.put("name", uName);
                 map.put("email", uEmail);
-                map.put("password", uPass);
+                /*map.put("password", uPass);*/
                 firestore.collection("user").document(id).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                     //Never enters onComplete function or onFailure
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        showToast("Usuario registrado con éxito");
+                        showToast(getResources().getString(R.string.userRegistred));
                         toMainPage();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -136,15 +137,27 @@ public class Register extends AppCompatActivity {
     }
 
     private void createCartCollection(String userId) {
-        // Crear la colección "cart" dentro de cada usuario
-        Map<String, Object> cartMap = new HashMap<>();
+        // Verificar si la colección "cart" ya existe para el usuario
         firestore.collection("user").document(userId).collection("cart")
-                .add(cartMap)
-                .addOnSuccessListener(documentReference -> {
-                    // La colección "cart" se creó con éxito
-                    showToast("Colección 'cart' creada para el usuario");
-                })
-                .addOnFailureListener(e -> showToast("Error al crear la colección 'cart': " + e.getMessage()));
+                .document("dummyDocument")  // Utiliza un documento ficticio para verificar la existencia
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (!task.getResult().exists()) {
+                            // La colección "cart" no existe, créela cuando el usuario agregue un producto al carrito
+                            firestore.collection("user").document(userId).collection("cart")
+                                    .document("dummyDocument")  // Utiliza el mismo documento ficticio
+                                    .delete()  // Elimina el documento ficticio creado para la verificación
+                                    .addOnSuccessListener(aVoid -> {
+                                        // La colección "cart" ahora está creada sin documentos
+                                    });
+                        } else {
+                            // La colección "cart" ya existe
+                        }
+                    } else {
+                        // Manejar el error al verificar la existencia de la colección
+                    }
+                });
     }
 
 }

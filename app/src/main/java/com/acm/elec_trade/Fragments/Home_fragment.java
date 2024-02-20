@@ -160,7 +160,6 @@ public class Home_fragment extends Fragment {
                 intent.putExtra("idProducto", clickedProduct.getName());
                 // Puedes usar Intent para iniciar un nuevo Activity, pasando la información necesaria
                 startActivity(intent);
-                Toast.makeText(getContext(), "Pulsaste la tarjeta " + position, Toast.LENGTH_SHORT).show();
             }
         });
         mRecyclerView.setAdapter(mProductAdapterFB);

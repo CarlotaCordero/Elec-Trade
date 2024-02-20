@@ -216,7 +216,7 @@ public class ProductoDetalle extends AppCompatActivity {
                         }
                     } else {
                         // Error al realizar la consulta
-                        showToast("Error al verificar el carrito: " + task.getException().getMessage());
+                        //showToast("Error al verificar el carrito: " + task.getException().getMessage());
                     }
                 });
     }
@@ -246,12 +246,12 @@ public class ProductoDetalle extends AppCompatActivity {
                             // Agregar el producto a la colección "cart" del usuario
                             firebaseFirestore.collection("user").document(uid).collection("cart")
                                     .add(productoCarrito)
-                                    .addOnSuccessListener(documentReference -> showToast("Producto agregado al carrito"))
-                                    .addOnFailureListener(e -> showToast("Error al agregar producto al carrito: " + e.getMessage()));
+                                    .addOnSuccessListener(documentReference -> showToast(getResources().getString(R.string.addCart)))
+                                    /*.addOnFailureListener(e -> showToast("Error al agregar producto al carrito: " + e.getMessage()))*/;
                         }
                     } else {
                         // Error al realizar la consulta
-                        showToast("Error al obtener datos del producto: " + task.getException().getMessage());
+                        /*showToast("Error al obtener datos del producto: " + task.getException().getMessage());*/
                     }
                 });
     }
@@ -266,12 +266,12 @@ public class ProductoDetalle extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             // El documento existe, ahora puedes eliminarlo
                             document.getReference().delete()
-                                    .addOnSuccessListener(aVoid -> showToast("Producto eliminado del carrito"))
-                                    .addOnFailureListener(e -> showToast("Error al eliminar producto del carrito: " + e.getMessage()));
+                                    .addOnSuccessListener(aVoid -> showToast(getResources().getString(R.string.deleteCart)))
+                                    /*.addOnFailureListener(e -> showToast("Error al eliminar producto del carrito: " + e.getMessage()))*/;
                         }
                     } else {
                         // Error al realizar la consulta
-                        showToast("Error al obtener datos del producto en el carrito: " + task.getException().getMessage());
+                        //showToast("Error al obtener datos del producto en el carrito: " + task.getException().getMessage());
                     }
                 });
     }
@@ -279,14 +279,14 @@ public class ProductoDetalle extends AppCompatActivity {
     private void abrirCorreoConNombreVendedor(String nombreVendedor, String correoVendedor) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{correoVendedor});
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Consulta sobre producto");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Hola " + nombreVendedor + ", ");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.consProd);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.hello)+" "+ nombreVendedor + ", ");
         emailIntent.setType("message/rfc822");
 
         try {
-            startActivity(Intent.createChooser(emailIntent, "Enviar correo"));
+            startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.envCorreo)));
         } catch (android.content.ActivityNotFoundException ex) {
-            showToast("No hay aplicaciones de correo instaladas.");
+            showToast(getResources().getString(R.string.noMailApp));
         }
     }
 
@@ -308,17 +308,18 @@ public class ProductoDetalle extends AppCompatActivity {
     private void topBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Product Detail</font>"));
+            String titulo = getResources().getString(R.string.productDetail);
+            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">"+titulo+"</font>"));
         }
     }
 
     private void mostrarDialogoConfirmacion() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Eliminar Producto");
-        builder.setMessage("¿Estás seguro de que deseas eliminar este producto?");
+        builder.setTitle(R.string.deleteProd);
+        builder.setMessage(R.string.deleteProdStr);
 
         // Agregar botón de confirmación
-        builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Lógica para eliminar el producto
@@ -335,24 +336,22 @@ public class ProductoDetalle extends AppCompatActivity {
                                     // El documento existe, ahora puedes eliminarlo
                                     document.getReference().delete()
                                             .addOnSuccessListener(aVoid -> {
-                                                showToast("Producto eliminado con éxito");
                                                 // Redirigir o realizar alguna acción adicional después de eliminar
                                                 Intent intent = new Intent(ProductoDetalle.this, Main.class);
                                                 startActivity(intent);
                                                 finish();  // Cierra la actividad actual
-                                            })
-                                            .addOnFailureListener(e -> showToast("Error al eliminar producto: " + e.getMessage()));
+                                            });
                                 }
                             } else {
                                 // Error al realizar la consulta
-                                showToast("Error al obtener datos del producto: " + task.getException().getMessage());
+                                //showToast("Error al obtener datos del producto: " + task.getException().getMessage());
                             }
                         });
             }
         });
 
         // Agregar botón de cancelación
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Cerrar el diálogo sin hacer nada

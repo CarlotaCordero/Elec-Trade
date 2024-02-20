@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/interior_caja"
-            android:hint="Username"
+            android:hint="@string/userName"
             android:inputType="text"
             android:textColor="@color/black"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -58,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/interior_caja"
-            android:hint="Email"
+            android:hint="@string/email"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/interior_caja"
-            android:hint="Password"
+            android:hint="@string/password"
             app:hintTextColor="@color/black"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -98,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/interior_caja"
-            android:hint="Confirm Password"
+            android:hint="@string/passworConfirm"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,7 +107,7 @@
         style="@style/boton_claro"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Sign Up"
+        android:text="@string/login"
         app:layout_constraintEnd_toStartOf="@+id/guidelineDer"
         app:layout_constraintStart_toStartOf="@+id/guidelineIzq"
         app:layout_constraintTop_toBottomOf="@+id/passwordconfirm" />

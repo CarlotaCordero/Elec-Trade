@@ -56,14 +56,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Product price"
-                    android:textColor="@color/Hadopelagic_Water"
-                    android:layout_marginLeft="24dp"/>
+                    android:textColor="@color/Goldfinger"
+                    android:layout_marginLeft="24dp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text=" €"
-                    android:textColor="@color/Hadopelagic_Water"/>
+                    android:textColor="@color/Goldfinger"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 

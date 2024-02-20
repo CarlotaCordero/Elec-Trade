@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity {
                 } else {
                     //showToast("Email / Password incorrectas");
                     //email.setError("Revisar");
-                    passwd.setError("Las credenciales no coinciden");
+                    passwd.setError(getResources().getString(R.string.revisar));
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {

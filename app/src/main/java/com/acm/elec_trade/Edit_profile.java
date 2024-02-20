@@ -98,7 +98,7 @@ public class Edit_profile extends AppCompatActivity {
                                 } else {
                                     // Si no hay foto de perfil, muestra la imagen predeterminada
                                     Glide.with(this)
-                                            .load(R.drawable.user_icon)
+                                            .load(R.drawable.robot)
                                             .circleCrop()
                                             .into(fotoPerfil);
                                 }
@@ -138,7 +138,7 @@ public class Edit_profile extends AppCompatActivity {
                             updateUserNameAndPhoto(currentUser.getUid(), nuevoNombre, null);
                         }
                     } else {
-                        Toast.makeText(Edit_profile.this, "Ingrese un nuevo nombre o seleccione una imagen", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Edit_profile.this, R.string.modData, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -186,7 +186,7 @@ public class Edit_profile extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Edit_profile.this, "Error al subir la imagen", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Edit_profile.this, "Error "+R.string.subirPhoto, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -205,22 +205,23 @@ public class Edit_profile extends AppCompatActivity {
         // Actualiza los datos en Firestore
         userRef.update(updates)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(Edit_profile.this, "Cambios guardados con éxito", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Edit_profile.this, R.string.editProfile, Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(Edit_profile.this, "Error al guardar los cambios", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Edit_profile.this, "Error", Toast.LENGTH_SHORT).show();
                 });
     }
 
     private void topBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">Edit Profile</font>"));
+            String titulo = getResources().getString(R.string.editProfile);
+            actionBar.setTitle(Html.fromHtml("<font color=\"#F2A71B\">"+titulo+"</font>"));
 
             // Agrega un botón de eliminación de cuenta a la barra de acciones
             actionBar.setDisplayOptions(actionBar.getDisplayOptions() | ActionBar.DISPLAY_SHOW_CUSTOM);
             TextView deleteAccountButton = new TextView(actionBar.getThemedContext());
-            deleteAccountButton.setText("DELETE");
+            deleteAccountButton.setText(R.string.delete);
             deleteAccountButton.setTextColor(Color.parseColor("#F2EFE9"));
             deleteAccountButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16); // Cambia el tamaño del texto según sea necesario
             ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
@@ -243,10 +244,10 @@ public class Edit_profile extends AppCompatActivity {
 
     private void showDeleteAccountDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Delete Account");
-        builder.setMessage("Are you sure you want to delete your account? This action cannot be undone.");
+        builder.setTitle(R.string.deleteAccount);
+        builder.setMessage(R.string.deleteAccountStr);
 
-        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Usuario ha confirmado la eliminación, proceder con la eliminación de la cuenta
@@ -254,7 +255,7 @@ public class Edit_profile extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Usuario ha cancelado la eliminación, cerrar el diálogo
@@ -283,11 +284,11 @@ public class Edit_profile extends AppCompatActivity {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             // La cuenta ha sido eliminada exitosamente
-                            Toast.makeText(Edit_profile.this, "Cuenta eliminada con éxito", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Edit_profile.this, R.string.deleteAccount, Toast.LENGTH_SHORT).show();
                             openLoginActivity(); // Redirige a la pantalla de inicio de sesión u otra actividad según sea necesario
                         } else {
                             // Error al eliminar la cuenta
-                            Toast.makeText(Edit_profile.this, "Error al eliminar la cuenta", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Edit_profile.this, "Error", Toast.LENGTH_SHORT).show();
                         }
                     });
         }
@@ -305,7 +306,7 @@ public class Edit_profile extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     // Error al eliminar el documento en Firestore
-                    Toast.makeText(Edit_profile.this, "Error al eliminar la información en Firestore", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Edit_profile.this, "Error", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -324,7 +325,7 @@ public class Edit_profile extends AppCompatActivity {
                         }
                     } else {
                         // Error al obtener los productos del usuario
-                        Toast.makeText(Edit_profile.this, "Error al obtener los productos del usuario", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Edit_profile.this, "Error", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
