@@ -240,7 +240,7 @@ public class ProductoDetalle extends AppCompatActivity {
                         // Verificar si hay algún documento en la consulta (producto en el carrito)
                         if (!task.getResult().isEmpty()) {
                             // El producto ya está en el carrito, cambiar el texto del botón y establecer un listener para eliminarlo
-                            cartButton.setText("Remove from Cart");
+                            cartButton.setText(R.string.deleteCart);
                             cartButton.setOnClickListener(v -> eliminarDelCarrito(currentUserUid, nombreProducto));
                         } else {
                             // El producto no está en el carrito, mantener el comportamiento original del botón
