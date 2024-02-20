@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,7 +31,7 @@ public class ProductoDetalle extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private String userIdOfProduct;
     private Button eliminarP, editarP;
-    private String nombreProducto;
+    private String nombreP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +43,12 @@ public class ProductoDetalle extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         // Recupera la información del Intent
         Intent intent = getIntent();
-        nombreProducto = intent.getStringExtra("idProducto");
-        obtenerDatosDelProducto(nombreProducto);
-        obtenerDatosUsuario(nombreProducto);
-        verificarSiEnCarrito(nombreProducto);
+        nombreP = intent.getStringExtra("idProducto");
+        obtenerDatosDelProducto(nombreP);
+        obtenerDatosUsuario(nombreP);
+        verificarSiEnCarrito(nombreP);
         TextView nProd = findViewById(R.id.nameProduct);
-        nProd.setText(nombreProducto);
+        nProd.setText(nombreP);
         //Boton para añadir al carrito
         Button cart = findViewById(R.id.addCart);
         cart.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +56,7 @@ public class ProductoDetalle extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 String uid = user.getUid();
-                aniadirAlCarrito(uid, nombreProducto);
+                aniadirAlCarrito(uid, nombreP);
             }
         });
 
@@ -78,6 +79,38 @@ public class ProductoDetalle extends AppCompatActivity {
         //Boton de eliminar y modificar producto
         eliminarP=findViewById(R.id.deleteProduct);
         editarP=findViewById(R.id.editProduct);
+    }
+
+    private void obtenerDatosDelProductoParaEditar(String nombreProducto) {
+        // Realiza una consulta para obtener el documento del producto
+        firebaseFirestore.collection("products")
+                .whereEqualTo("name", nombreProducto)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // El documento existe, ahora puedes obtener más datos
+                            String descripcion = document.getString("desc");
+                            String precio = document.getString("price");
+                            String photo = document.getString("imgurl");
+                            String productoUid = document.getId(); // Obtener el UID del producto
+
+                            // Envía los datos a la clase Edit_product
+                            Intent editProduct = new Intent(ProductoDetalle.this, Edit_product.class);
+                            editProduct.putExtra("nombreProducto", nombreProducto);
+                            editProduct.putExtra("descripcionProducto", descripcion);
+                            editProduct.putExtra("precioProducto", precio);
+                            editProduct.putExtra("imgurlProducto", photo);
+                            editProduct.putExtra("productoUid", productoUid); // Agregar el UID del producto
+
+                            // Agrega más extras si es necesario
+                            startActivity(editProduct);
+                        }
+                    } else {
+                        // Error al realizar la consulta
+                        Log.e("ProductoDetalle", "Error al obtener datos del producto para editar: " + task.getException());
+                    }
+                });
     }
 
     private void obtenerDatosDelProducto(String nombreProducto) {
@@ -180,9 +213,8 @@ public class ProductoDetalle extends AppCompatActivity {
             editarP.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent editProduct = new Intent(ProductoDetalle.this, Edit_product.class);
-                    editProduct.putExtra("nomProduc", nombreProducto);
-                    startActivity(editProduct);
+                    Log.d("ProductoDetalle", "nombreProducto: " + nombreP);
+                    obtenerDatosDelProductoParaEditar(nombreP);
                 }
             });
         } else {
@@ -328,7 +360,7 @@ public class ProductoDetalle extends AppCompatActivity {
 
                 // Realiza una consulta para obtener el documento del producto
                 firebaseFirestore.collection("products")
-                        .whereEqualTo("name", nombreProducto)
+                        .whereEqualTo("name", nombreP)
                         .get()
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
