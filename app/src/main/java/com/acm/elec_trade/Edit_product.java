@@ -106,7 +106,7 @@ public class Edit_product extends AppCompatActivity {
         DocumentReference productoRef = firebaseFirestore.collection("products").document(productoUid);
 
         Map<String, Object> nuevosDatos = new HashMap<>();
-        nuevosDatos.put("name", nuevoNombre);
+        //nuevosDatos.put("name", nuevoNombre);
         nuevosDatos.put("desc", nuevaDescripcion);
         nuevosDatos.put("price", nuevoPrecio);
         nuevosDatos.put("imgurl", nuevaImageUrl);

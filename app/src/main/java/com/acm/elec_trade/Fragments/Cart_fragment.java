@@ -28,6 +28,7 @@ import com.acm.elec_trade.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -107,6 +108,7 @@ public class Cart_fragment extends Fragment {
         mProductAdapterFB = new ProductAdapterFB(firestoreRecyclerOptions);
         mProductAdapterFB.notifyDataSetChanged();
         mProductAdapterFB.startListening();
+        actualizarDatosEnCarrito();
         mProductAdapterFB.setOnItemClickListener(new ProductAdapterFB.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
@@ -124,6 +126,65 @@ public class Cart_fragment extends Fragment {
         recyclerViewCart.setAdapter(mProductAdapterFB);
         checkIfCartIsEmpty(rootView);
         return rootView;
+    }
+
+    private Task<DocumentSnapshot> obtenerDatosProducto(String productName) {
+        return firebaseFirestore.collection("products")
+                .whereEqualTo("name", productName)
+                .limit(1)
+                .get()
+                .continueWith(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        return task.getResult().getDocuments().get(0);
+                    } else {
+                        throw task.getException();
+                    }
+                });
+    }
+
+    private Task<Void> actualizarDatosEnCarrito(DocumentSnapshot cartDocument) {
+        String productName = cartDocument.getString("name");
+
+        return obtenerDatosProducto(productName).continueWithTask(productTask -> {
+            if (productTask.isSuccessful() && productTask.getResult() != null) {
+                DocumentSnapshot productDocument = productTask.getResult();
+                return cartDocument.getReference().update(
+                        "price", productDocument.getString("price"),
+                        "desc", productDocument.getString("desc"),
+                        "imgurl",productDocument.getString("imgurl")
+                );
+            } else {
+                throw productTask.getException();
+            }
+        });
+    }
+
+    private void actualizarDatosEnCarrito() {
+        // Obtén el UID del usuario actual
+        String uid = firebaseAuth.getCurrentUser().getUid();
+
+        // Consulta los productos en el carrito del usuario actual
+        firebaseFirestore.collection("user").document(uid).collection("cart")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // Actualiza los datos en el carrito utilizando la función auxiliar
+                            actualizarDatosEnCarrito(document)
+                                    .addOnCompleteListener(updateTask -> {
+                                        if (updateTask.isSuccessful()) {
+                                            // Los datos se actualizaron correctamente
+                                        } else {
+                                            // Manejar el error al actualizar datos en el carrito
+                                            showToast("Error al actualizar datos en el carrito");
+                                        }
+                                    });
+                        }
+                    } else {
+                        // Manejar el error al obtener datos del carrito
+                        showToast("Error al obtener datos del carrito");
+                    }
+                });
     }
 
     private void verificarExistenciaProducto(ProductFB product) {
